@@ -2,6 +2,7 @@ defmodule HukumEngineTest do
   use ExUnit.Case
 
   alias HukumEngine.Game
+  alias HukumEngine.GameServer
   alias HukumEngine.Player
 
   @test_player_name "vijay"
@@ -10,31 +11,19 @@ defmodule HukumEngineTest do
     assert is_pid(HukumEngine.new_game)
   end
 
-  test "HukumEngine.new_game initializes game in :waiting_for_players stage" do
-    game = Game.new_game()
-    assert game.stage == :waiting_for_players
+  test "HukumEngine FSM starts in `waiting_for_players` state" do
+    pid = HukumEngine.new_game
+    fsm_pid = :sys.get_state(pid).fsm
+    { fsm_state, _ } = :sys.get_state(fsm_pid)
+    assert fsm_state == :waiting_for_players
   end
 
-  test "Game.put_player initializes a player and adds to the players list" do
-    game = Game.new_game()
-    game = Game.put_player(game, @test_player_name)
-    assert MapSet.member?(game.players, %Player{ name: @test_player_name, hand: []})
-  end
-
-  test "Game.put_player returns an error if the username is already taken" do
-
-  end
-
-  test "Game.put_player does not add a player if already 4 players" do
-    game = Game.new_game()
-           |> Game.put_player("a")
-           |> Game.put_player("b")
-           |> Game.put_player("c")
-           |> Game.put_player("d")
-           |> Game.put_player("e")
-           |> Game.put_player("f")
-           |> Game.put_player("g")
-
-    assert MapSet.size(game.players) == 4
+  test "Adding four players is :ok, fifth is :error" do
+    pid = HukumEngine.new_game()
+    assert HukumEngine.add_player(pid, "a") == :ok
+    assert HukumEngine.add_player(pid, "b") == :ok
+    assert HukumEngine.add_player(pid, "c") == :ok
+    assert HukumEngine.add_player(pid, "d") == :ok
+    assert HukumEngine.add_player(pid, "e") == :error
   end
 end

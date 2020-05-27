@@ -10,7 +10,7 @@ defmodule HukumEngine.GameSupervisor do
   end
 
   def start_game_server() do
-    spec = {HukumEngine.Server, []}
+    spec = {HukumEngine.GameServer, []}
     DynamicSupervisor.start_child(__MODULE__, spec)
   end
 
