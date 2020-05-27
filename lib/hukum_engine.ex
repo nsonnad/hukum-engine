@@ -5,4 +5,8 @@ defmodule HukumEngine do
     pid
   end
 
+  def put_player(game_pid, player_name) do
+    GenServer.call(game_pid, { :put_player, player_name })
+  end
+
 end

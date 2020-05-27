@@ -12,10 +12,10 @@ defmodule HukumEngine.Server do
     { :ok, Game.new_game() }
   end
 
-  #def handle_call({ :make_move, guess }, _from, game) do
-    #{ game, tally } = Game.make_move(game, guess)
-    #{ :reply, tally, game }
-  #end
+  def handle_call({ :put_player, player_name }, _from, game) do
+    game = Game.put_player(game, player_name)
+    { :reply, game, game }
+  end
 
   #def handle_call({ :tally }, _from, game) do
     #{ :reply, Game.tally(game), game }
