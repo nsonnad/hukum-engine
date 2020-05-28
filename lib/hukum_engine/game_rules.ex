@@ -12,8 +12,7 @@ defmodule HukumEngine.Rules do
   defstruct(
     stage: :waiting_for_players,
     player_count: 0,
-    team_counts: %{1 => 0, 2 => 0},
-    player_turn: nil
+    teams: %{1 => [], 2 => []}
   )
 
   def new(), do: %Rules{}
@@ -26,18 +25,25 @@ defmodule HukumEngine.Rules do
     end
   end
 
-  def check(%Rules{stage: :choosing_teams} = rules, {:choose_team, team}) do
-    team_count = Map.get(rules.team_count, team)
-    total = team_total(rules.team_counts)
-    case { team_vacant?(team_count), final_team_player?(total) } do
-      {true, true} ->
-        team_counts = increment_team_counts(rules.team_counts, team)
-        {:ok, %Rules{ rules | team_counts: team_counts, stage: :calling }}
-      {true, false} ->
-        team_counts = increment_team_counts(rules.team_counts, team)
-        {:ok, %Rules{ rules | team_counts: team_counts, stage: :choosing_teams }}
-      {false, _} ->
-        {:error, rules}
+  def check(%Rules{stage: :choosing_teams} = rules, {:choose_team, player, team}) do
+    chosen_team = Map.get(rules.teams, team)
+    assigned_players = get_assigned_players(rules.teams)
+
+    case {
+      team_vacant?(chosen_team),
+      final_player?(length(assigned_players)),
+      player_unassigned?(assigned_players, player)
+    } do
+      {true, true, true} ->
+        teams = Map.put(rules.teams, team, [player | rules.teams[team]])
+        {:ok, %Rules{ rules | teams: teams, stage: :start_game, }}
+      {true, false, true} ->
+        teams = Map.put(rules.teams, team, [player | rules.teams[team]])
+        {:ok, %Rules{ rules | teams: teams }}
+      {_, _, false} ->
+        {:error, :already_assigned}
+      {false, _, _} ->
+        {:error, :team_full}
     end
   end
 
@@ -45,15 +51,15 @@ defmodule HukumEngine.Rules do
 
   # helpers
 
-  defp team_vacant?(team_count), do: team_count < 2
+  defp team_vacant?(team), do: length(team) < 2
 
-  defp final_team_player?(total_team_players), do: total_team_players == 3
+  defp final_player?(total_team_players), do: total_team_players == 3
 
-  defp team_total(team_counts) do
-    Enum.reduce(team_counts, 0, fn({_k, count}, acc) -> count + acc end)
+  defp player_unassigned?(assigned_players, player) do
+    Enum.member?(assigned_players, player) == false
   end
 
-  defp increment_team_counts(team_counts, team) do
-    Map.put(team_counts, team, Map.get(team_counts, team) + 1)
+  defp get_assigned_players(teams) do
+    teams[1] ++ teams[2]
   end
 end
