@@ -6,7 +6,8 @@ defmodule HukumEngine.Game do
     players: [],
     score: {0, 0},
     rules: :none,
-    dealer_seat: nil, # int of player index
+    dealer: nil, # int of player index
+    leader: nil,
     deck: nil,
     trump: :undecided
   )
@@ -15,7 +16,7 @@ defmodule HukumEngine.Game do
     %Game{
       rules: rules,
       players: players,
-      dealer_seat: random_dealer()
+      dealer: random_player_index()
     }
   end
 
@@ -34,39 +35,35 @@ defmodule HukumEngine.Game do
     |> start_new_hand
   end
 
-  def create_player({name, index}, team_number) do
-    player_kw = player_atom(index, team_number)
+  def create_player({ name, index }, team_number) do
+    player_kw = String.to_atom("player_t#{team_number}_p#{index+1}")
     { player_kw, %Player{name: name, team: team_number }}
   end
 
   def start_new_hand(game) do
     deck = Enum.split(Deck.shuffled(), 16)
+    leader = next_player(game.dealer)
 
-    players_with_cards =
-      game.players
-      |> distribute_cards(next_player(game.dealer_seat), elem(deck, 0))
-
-    %{ game | players: players_with_cards, deck: elem(deck, 1) }
+    %{ game |
+      players: distribute_cards(game.players, leader, elem(deck, 0)),
+      deck: elem(deck, 1),
+      leader: leader }
   end
 
   # Starting with the dealer, go around in a circle and give each player 4 cards
   def distribute_cards(players, _player, []), do: players
 
-  def distribute_cards(players, player, [card | deck]) do
-    {key, _} = Enum.at(players, player-1)
-    {_, players} = Keyword.get_and_update(players, key, fn current ->
-      { current, Map.put(current, :hand, [ card | current.hand ]) }
+  def distribute_cards(players, player_index, [card | deck]) do
+    {key, _} = Enum.at(players, player_index-1)
+    {_, players} = Keyword.get_and_update(players, key, fn player ->
+      { player, Map.put(player, :hand, [ card | player.hand ]) }
     end)
-    distribute_cards(players, next_player(player), deck)
-  end
-
-  defp player_atom(index, team_number) do
-    String.to_atom("player_t#{team_number}_p#{index+1}")
+    distribute_cards(players, next_player(player_index), deck)
   end
 
   defp next_player(_player = 4), do: 1
   defp next_player(player), do: player + 1
 
-  defp random_dealer, do: :rand.uniform(4)
+  defp random_player_index, do: :rand.uniform(4)
 
 end

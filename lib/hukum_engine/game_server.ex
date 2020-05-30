@@ -4,8 +4,6 @@ defmodule HukumEngine.GameServer do
   # the `Rules` state machine, making sure corresponding updates to the `Game`
   # state happen at the appropriate times.
 
-  defstruct fsm: :none
-
   alias HukumEngine.{Game, Rules}
 
   use GenServer

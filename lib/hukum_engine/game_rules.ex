@@ -1,12 +1,11 @@
 defmodule HukumEngine.Rules do
   alias __MODULE__
-  import Kernel
 
   # Finite state machine for managing the rules about state transitions in our
   # game. The stages of a game are:
   # :waiting_for_teams
   # :call_or_pass
-  # :calling
+  # :calling?
   # more tk...
 
   defstruct(
@@ -27,7 +26,6 @@ defmodule HukumEngine.Rules do
         {:error, :teams_full}
     end
   end
-
 
   def check(_state, _action), do: :error
 
