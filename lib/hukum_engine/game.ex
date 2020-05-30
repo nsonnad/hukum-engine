@@ -1,9 +1,9 @@
 defmodule HukumEngine.Game do
-  alias HukumEngine.{Deck, Game, Player}
+  alias HukumEngine.{Game, Player, Rules}
   import Kernel
 
   defstruct(
-    players: Map.new(),
+    players: [],
     score: nil,
     rules: :none,
     dealer: nil,
@@ -14,19 +14,18 @@ defmodule HukumEngine.Game do
     %Game{ rules: rules }
   end
 
-  def add_player(game, name) do
-    new_player_atom = create_player_atom(map_size(game.players))
-    %{ game |
-      players: Map.put(game.players, new_player_atom, %Player{ name: name }
-    )}
+  def add_team(game = %Game{rules: %Rules{team_status: {:empty, :empty}}}, player_names) do
+    team_players = Enum.map(player_names, &create_player(&1, 1))
+    %{game | players: [team_players | game.players] }
   end
 
-  def assign_team(game, player_id, team_number) do
-    put_in(
-      game,
-      [Access.key(:players), player_id, Access.key(:team)],
-      team_number
-    )
+  def add_team(game = %Game{rules: %Rules{team_status: {:filled, :empty}}}, player_names) do
+    team_players = Enum.map(player_names, &create_player(&1, 2))
+    %{game | players: [team_players | game.players]}
+  end
+
+  def create_player(name, team_number) do
+    %Player{name: name, team: team_number }
   end
 
   def reset_score(game) do
@@ -46,10 +45,5 @@ defmodule HukumEngine.Game do
   end
 
   def deal_cards(game, _), do: game
-
-  defp create_player_atom(player_number) do
-    "player" <> Integer.to_string(player_number + 1)
-    |> String.to_atom
-  end
 
 end

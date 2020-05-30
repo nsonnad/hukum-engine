@@ -5,12 +5,8 @@ defmodule HukumEngine do
     pid
   end
 
-  def add_player(game_pid, player_name) do
-    GenServer.call(game_pid, { :add_player, player_name })
-  end
-
-  def choose_team(game_pid, player_id, team) do
-    GenServer.call(game_pid, { :choose_team, player_id, team })
+  def add_team(game_pid, player_names) do
+    GenServer.call(game_pid, { :add_team, player_names })
   end
 
 end
