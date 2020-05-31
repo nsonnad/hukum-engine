@@ -35,7 +35,7 @@ defmodule HukumEngine.Rules do
     {:ok, %{ rules | stage: :waiting_for_first_card }}
   end
 
-  def check(%Rules{stage: :waiting_for_first_card} = rules, :play_card) do
+  def check(%Rules{stage: :waiting_for_first_card} = rules, :play_first_card) do
     {:ok, %{ rules | stage: :waiting_for_trump }}
   end
 

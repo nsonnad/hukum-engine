@@ -60,13 +60,18 @@ defmodule HukumEngine.Game do
   end
 
   def play_card(game, player_id, team, card) do
-    game = %{ game | current_trick: [ {player_id, team, card} | game.current_trick ]}
-    case length(game.current_trick) == 3 do
+    current_trick = [ {player_id, team, card} | game.current_trick ]
+
+    case length(current_trick) == 4 do
       true ->
-        highest_card = get_highest_card(game.current_trick, game.trump, game.suit_led)
-        %{game | hand_tricks: [ highest_card.team | game.hand_tricks ]}
+        {hi_player, hi_team, _hi_card} = get_highest_card(game.current_trick, game.trump, game.suit_led)
+        %{game |
+          current_trick: [],
+          hand_tricks: [ hi_team | game.hand_tricks ],
+          leader: hi_player
+        }
       false ->
-        game
+        %{game | current_trick: current_trick }
     end
   end
 
@@ -86,11 +91,17 @@ defmodule HukumEngine.Game do
 
   def score_card(_rank, _card_suit, _trump, _led_suit), do: 0
 
+  def set_trump(game, trump, team) do
+    %{ game | suit_trump: trump, calling_team: team }
+  end
+
   def game_state_reply(game) do
     %{
       players: game.players,
       turn: game.turn,
-      score: game.score
+      score: game.score,
+      current_trick: game.current_trick,
+      suit_trump: game.suit_trump
     }
   end
 
@@ -112,11 +123,17 @@ defmodule HukumEngine.Game do
   end
 
   def next_turn(game), do: %{game | turn: next_player(game.turn)}
+  def prev_turn(game), do: %{game | turn: prev_player(game.turn)}
 
   def next_player(:player_t1_p1), do: :player_t2_p1
   def next_player(:player_t2_p1), do: :player_t1_p2
   def next_player(:player_t1_p2), do: :player_t2_p2
   def next_player(:player_t2_p2), do: :player_t1_p1
+
+  def prev_player(:player_t1_p1), do: :player_t2_p2
+  def prev_player(:player_t2_p1), do: :player_t1_p1
+  def prev_player(:player_t1_p2), do: :player_t2_p1
+  def prev_player(:player_t2_p2), do: :player_t1_p2
 
   defp random_player(players) do
     {kw, _ } = Enum.at(players, :rand.uniform(4) - 1)

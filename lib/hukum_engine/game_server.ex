@@ -32,10 +32,10 @@ defmodule HukumEngine.GameServer do
     end
   end
 
-  def handle_call({:pass, player_id}, _from, game) do
+  def handle_call({:pass}, _from, game) do
     with {:ok, _rules} <- Rules.check(game.rules, :pass)
     do
-      case player_id == game.dealer do
+      case game.turn == game.dealer do
         true -> game |> Game.start_new_hand |> reply_game_data()
         false -> game |> Game.next_turn |> reply_game_data()
       end
@@ -44,27 +44,55 @@ defmodule HukumEngine.GameServer do
     end
   end
 
-  def handle_call({:calling, player_id}, _from, game) do
-    with {:ok, rules} <- Rules.check(game.rules, { :calling, player_id, game.turn })
+  def handle_call({:calling}, _from, game) do
+    with {:ok, rules} <- Rules.check(game.rules, :calling)
     do
       game
       |> Game.next_turn
       |> update_rules(rules)
+      |> reply_game_data()
     else
       :error -> {:reply, :error, game}
     end
   end
 
-  def handle_call({:play_card, player_id, team, card}, _from, game) do
-    with {:ok, rules} <- Rules.check(game.rules, { :play_card })
+  def handle_call({:play_first_card, player_id, team, card}, _from, game) do
+    with {:ok, rules} <- Rules.check(game.rules, :play_first_card)
     do
       game
       |> Game.play_card(player_id, team, card)
+      |> Game.prev_turn
       |> update_rules(rules)
+      |> reply_game_data()
     else
       :error -> {:reply, :error, game}
     end
   end
+
+  def handle_call({:call_trump, trump, team}, _from, game) do
+    with {:ok, rules} <- Rules.check(game.rules, :call_trump)
+    do
+      game
+      |> Game.set_trump(trump, team)
+      |> Game.next_turn
+      |> Game.next_turn
+      |> update_rules(rules)
+      |> reply_game_data()
+    else
+      :error -> {:reply, :error, game}
+    end
+  end
+
+  #def handle_call({:play_card, player_id, team, card}, _from, game) do
+    #with {:ok, rules} <- Rules.check(game.rules, :play_card)
+    #do
+      #game
+      #|> Game.play_card(player_id, team, card)
+      #|> update_rules(rules)
+    #else
+      #:error -> {:reply, :error, game}
+    #end
+  #end
 
   defp update_rules(game, rules), do: %{ game | rules: rules }
 
