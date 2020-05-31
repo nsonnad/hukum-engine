@@ -2,6 +2,8 @@ defmodule HukumEngine.Game do
   alias HukumEngine.{Deck, Game, Player, Rules}
   import Kernel
 
+  @deck_size 32
+
   defstruct(
     players: [],
     score: {0, 0},
@@ -16,7 +18,7 @@ defmodule HukumEngine.Game do
     %Game{
       rules: rules,
       players: players,
-      dealer: random_player_index()
+      dealer: random_player_seat()
     }
   end
 
@@ -41,7 +43,7 @@ defmodule HukumEngine.Game do
   end
 
   def start_new_hand(game) do
-    deck = Enum.split(Deck.shuffled(), 16)
+    deck = Enum.split(Deck.shuffled(), div(@deck_size, 2))
     leader = next_player(game.dealer)
 
     %{ game |
@@ -53,17 +55,17 @@ defmodule HukumEngine.Game do
   # Starting with the dealer, go around in a circle and give each player 4 cards
   def distribute_cards(players, _player, []), do: players
 
-  def distribute_cards(players, player_index, [card | deck]) do
-    {key, _} = Enum.at(players, player_index-1)
+  def distribute_cards(players, player_seat, [card | deck]) do
+    {key, _} = Enum.at(players, player_seat-1)
     {_, players} = Keyword.get_and_update(players, key, fn player ->
       { player, Map.put(player, :hand, [ card | player.hand ]) }
     end)
-    distribute_cards(players, next_player(player_index), deck)
+    distribute_cards(players, next_player(player_seat), deck)
   end
 
-  defp next_player(_player = 4), do: 1
-  defp next_player(player), do: player + 1
+  def next_player(_player = 4), do: 1
+  def next_player(player), do: player + 1
 
-  defp random_player_index, do: :rand.uniform(4)
+  defp random_player_seat, do: :rand.uniform(4)
 
 end
