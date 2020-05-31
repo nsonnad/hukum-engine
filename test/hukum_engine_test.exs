@@ -67,6 +67,12 @@ defmodule HukumEngineTest do
       {:player_t1_p2, 1, %{rank: :king, suit: :clubs}},
       {:player_t2_p2, 2, %{rank: 10, suit: :hearts}},
     ]
+    trump_trick2 = [
+      {:player_t1_p1, 1, %{rank: 7, suit: :hearts}},
+      {:player_t2_p1, 2, %{rank: 9, suit: :hearts}},
+      {:player_t1_p2, 1, %{rank: :ace, suit: :spades}},
+      {:player_t2_p2, 2, %{rank: 10, suit: :hearts}},
+    ]
     suit_trick = [
       {:player_t1_p1, 1, %{rank: 7, suit: :diamonds}},
       {:player_t2_p1, 2, %{rank: 8, suit: :diamonds}},
@@ -81,6 +87,7 @@ defmodule HukumEngineTest do
     ]
 
     assert Game.get_highest_card(trump_trick, :diamonds, :clubs) == Enum.at(trump_trick, 0)
+    assert Game.get_highest_card(trump_trick2, :hearts, :spades) == Enum.at(trump_trick2, 3)
     assert Game.get_highest_card(suit_trick, :hearts, :diamonds) == Enum.at(suit_trick, 3)
     assert Game.get_highest_card(offsuit_trick, :hearts, :clubs) == Enum.at(offsuit_trick, 1)
   end
