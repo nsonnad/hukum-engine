@@ -1,8 +1,8 @@
 defmodule HukumEngine.Rules do
   alias __MODULE__
 
-  # Finite state machine for managing the rules about state transitions in our
-  # game. The stages of a game are:
+  # Finite state machine for managing the rules about the stages of our game.
+  # The stages of a game are:
   # :waiting_for_teams
   # :call_or_pass
   # :calling?
@@ -27,8 +27,14 @@ defmodule HukumEngine.Rules do
     end
   end
 
+  def check(%Rules{stage: :call_or_pass} = rules, { :pass, player_id, turn }) do
+    case player_id == turn do
+      true -> {:ok, rules}
+      false -> {:error, :not_your_turn}
+    end
+  end
+
   def check(_state, _action), do: :error
 
   # helpers
-
 end

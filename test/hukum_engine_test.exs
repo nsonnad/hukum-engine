@@ -36,6 +36,40 @@ defmodule HukumEngineTest do
     assert Enum.at(Keyword.get(players, :player_t1_p1).hand, 3) == Enum.at(deck, 3)
   end
 
+  test "passing advances the turn to the next player" do
+    pid = init_game()
+    game = HukumEngine.get_game_state(pid)
+    new_game = HukumEngine.pass(pid, game.turn)
+    assert new_game.turn == Game.next_player(game.turn)
+  end
+
+  test "four passes deals a new hand and restarts the call or pass process" do
+    pid = init_game()
+    g1 = HukumEngine.get_game_state(pid)
+    g2 = HukumEngine.pass(pid, g1.turn)
+    g3 = HukumEngine.pass(pid, g2.turn)
+    g4 = HukumEngine.pass(pid, g3.turn)
+    g5 = HukumEngine.pass(pid, g4.turn)
+    p1_g1_hand = Keyword.get(g1.players, :player_t1_p1).hand
+    p1_g4_hand = Keyword.get(g4.players, :player_t1_p1).hand
+    p1_g5_hand = Keyword.get(g5.players, :player_t1_p1).hand
+
+    assert length(p1_g5_hand) == 4
+    assert g1.turn == g5.turn
+    assert p1_g1_hand == p1_g4_hand
+    assert p1_g1_hand != p1_g5_hand
+  end
+
+  # helpers
+  # =====================================
+
+  defp init_game() do
+    pid = HukumEngine.new_game()
+    HukumEngine.add_team(pid, ["player1", "player2"])
+    HukumEngine.add_team(pid, ["player3", "player4"])
+    pid
+  end
+
   defp test_players() do
     [
       player_t1_p1: %Player{name: "p1"},

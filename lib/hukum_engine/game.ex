@@ -9,17 +9,13 @@ defmodule HukumEngine.Game do
     score: {0, 0},
     rules: :none,
     dealer: nil,
-    leader: nil,
     deck: nil,
     turn: nil,
     trump: :undecided
   )
 
   def new_game(rules, players \\ []) do
-    %Game{
-      rules: rules,
-      players: players
-    }
+    %Game{ rules: rules, players: players }
   end
 
   # add first team
@@ -41,30 +37,50 @@ defmodule HukumEngine.Game do
   end
 
   def create_player({ name, index }, team_number) do
-    player_kw = String.to_atom("player_t#{team_number}_p#{index+1}")
-    { player_kw, %Player{name: name, team: team_number }}
+    player_id = String.to_atom("player_t#{team_number}_p#{index+1}")
+    { player_id, %Player{name: name, team: team_number }}
   end
 
   def start_new_hand(game) do
     deck = Enum.split(Deck.shuffled(), div(@deck_size, 2))
-    leader = next_player(game.dealer)
+    turn = next_player(game.dealer)
+    players =
+      game.players
+      |> clear_hands
+      |> distribute_cards(turn, elem(deck, 0))
 
     %{ game |
-      players: distribute_cards(game.players, leader, elem(deck, 0)),
+      players: players,
       deck: elem(deck, 1),
-      leader: leader,
-      turn: leader }
+      turn: turn }
+  end
+
+  def game_state_reply(game) do
+    %{
+      players: game.players,
+      turn: game.turn,
+      score: game.score
+    }
+  end
+
+  # helpers
+  # ===============================
+
+  def clear_hands(players) do
+    Enum.map(players, fn {k, p} -> {k, Map.put(p, :hand, [])} end)
   end
 
   # Starting with the dealer, go around in a circle and give each player 4 cards
   def distribute_cards(players, _player, []), do: players
 
-  def distribute_cards(players, player_kw, [card | deck]) do
-    {_, players} = Keyword.get_and_update(players, player_kw, fn player ->
+  def distribute_cards(players, player_id, [card | deck]) do
+    {_, players} = Keyword.get_and_update(players, player_id, fn player ->
       { player, Map.put(player, :hand, [ card | player.hand ]) }
     end)
-    distribute_cards(players, next_player(player_kw), deck)
+    distribute_cards(players, next_player(player_id), deck)
   end
+
+  def next_turn(game), do: %{game | turn: next_player(game.turn)}
 
   def next_player(:player_t1_p1), do: :player_t2_p1
   def next_player(:player_t2_p1), do: :player_t1_p2
