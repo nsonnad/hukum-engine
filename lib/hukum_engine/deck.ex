@@ -6,4 +6,10 @@ defmodule HukumEngine.Deck do
   )
 
   def shuffled(), do: Enum.shuffle(@cards)
+
+  def value(num) when num in 7..10, do: num
+  def value(:jack), do: 11
+  def value(:queen), do: 12
+  def value(:king), do: 13
+  def value(:ace), do: 14
 end

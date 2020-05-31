@@ -60,8 +60,34 @@ defmodule HukumEngineTest do
     assert p1_g1_hand != p1_g5_hand
   end
 
+  test "getting the highest card from a trick" do
+    trump_trick = [
+      {:player_t1_p1, 1, %{rank: 7, suit: :diamonds}},
+      {:player_t2_p1, 2, %{rank: :ace, suit: :clubs}},
+      {:player_t1_p2, 1, %{rank: :king, suit: :clubs}},
+      {:player_t2_p2, 2, %{rank: 10, suit: :hearts}},
+    ]
+    suit_trick = [
+      {:player_t1_p1, 1, %{rank: 7, suit: :diamonds}},
+      {:player_t2_p1, 2, %{rank: 8, suit: :diamonds}},
+      {:player_t1_p2, 1, %{rank: :king, suit: :diamonds}},
+      {:player_t2_p2, 2, %{rank: :ace, suit: :diamonds}},
+    ]
+    offsuit_trick = [
+      {:player_t1_p1, 1, %{rank: 7, suit: :diamonds}},
+      {:player_t2_p1, 2, %{rank: 8, suit: :clubs}},
+      {:player_t1_p2, 1, %{rank: :king, suit: :diamonds}},
+      {:player_t2_p2, 2, %{rank: :ace, suit: :diamonds}},
+    ]
+
+    assert Game.get_highest_card(trump_trick, :diamonds, :clubs) == Enum.at(trump_trick, 0)
+    assert Game.get_highest_card(suit_trick, :hearts, :diamonds) == Enum.at(suit_trick, 3)
+    assert Game.get_highest_card(offsuit_trick, :hearts, :clubs) == Enum.at(offsuit_trick, 1)
+  end
+
   # helpers
   # =====================================
+
 
   defp init_game() do
     pid = HukumEngine.new_game()

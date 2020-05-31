@@ -16,6 +16,10 @@ defmodule HukumEngine.GameServer do
     { :ok, Game.new_game(%Rules{}) }
   end
 
+  def handle_call({ :get_game_state }, _from, game) do
+    reply_game_data(game)
+  end
+
   def handle_call({:add_team, player_names}, _from, game) do
     with {:ok, rules} <- Rules.check(game.rules, :add_team)
     do
@@ -29,7 +33,7 @@ defmodule HukumEngine.GameServer do
   end
 
   def handle_call({:pass, player_id}, _from, game) do
-    with {:ok, _rules} <- Rules.check(game.rules, { :pass, player_id, game.turn })
+    with {:ok, _rules} <- Rules.check(game.rules, :pass)
     do
       case player_id == game.dealer do
         true -> game |> Game.start_new_hand |> reply_game_data()
@@ -40,8 +44,26 @@ defmodule HukumEngine.GameServer do
     end
   end
 
-  def handle_call({ :get_game_state }, _from, game) do
-    reply_game_data(game)
+  def handle_call({:calling, player_id}, _from, game) do
+    with {:ok, rules} <- Rules.check(game.rules, { :calling, player_id, game.turn })
+    do
+      game
+      |> Game.next_turn
+      |> update_rules(rules)
+    else
+      :error -> {:reply, :error, game}
+    end
+  end
+
+  def handle_call({:play_card, player_id, team, card}, _from, game) do
+    with {:ok, rules} <- Rules.check(game.rules, { :play_card })
+    do
+      game
+      |> Game.play_card(player_id, team, card)
+      |> update_rules(rules)
+    else
+      :error -> {:reply, :error, game}
+    end
   end
 
   defp update_rules(game, rules), do: %{ game | rules: rules }

@@ -27,11 +27,20 @@ defmodule HukumEngine.Rules do
     end
   end
 
-  def check(%Rules{stage: :call_or_pass} = rules, { :pass, player_id, turn }) do
-    case player_id == turn do
-      true -> {:ok, rules}
-      false -> {:error, :not_your_turn}
-    end
+  def check(%Rules{stage: :call_or_pass} = rules, :pass) do
+    {:ok, rules}
+  end
+
+  def check(%Rules{stage: :call_or_pass} = rules, :calling) do
+    {:ok, %{ rules | stage: :waiting_for_first_card }}
+  end
+
+  def check(%Rules{stage: :waiting_for_first_card} = rules, :play_card) do
+    {:ok, %{ rules | stage: :waiting_for_trump }}
+  end
+
+  def check(%Rules{stage: :waiting_for_trump} = rules, :call_trump) do
+    {:ok, %{ rules | stage: :playing_hand }}
   end
 
   def check(_state, _action), do: :error

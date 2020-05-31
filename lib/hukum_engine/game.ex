@@ -11,7 +11,11 @@ defmodule HukumEngine.Game do
     dealer: nil,
     deck: nil,
     turn: nil,
-    trump: :undecided
+    calling_team: nil,
+    current_trick: [],
+    hand_tricks: %{1 => 0, 2 => 0},
+    suit_led: :undecided,
+    suit_trump: :undecided
   )
 
   def new_game(rules, players \\ []) do
@@ -54,6 +58,33 @@ defmodule HukumEngine.Game do
       deck: elem(deck, 1),
       turn: turn }
   end
+
+  def play_card(game, player_id, team, card) do
+    game = %{ game | current_trick: [ {player_id, team, card} | game.current_trick ]}
+    case length(game.current_trick) == 3 do
+      true ->
+        highest_card = get_highest_card(game.current_trick, game.trump, game.suit_led)
+        %{game | hand_tricks: [ highest_card.team | game.hand_tricks ]}
+      false ->
+        game
+    end
+  end
+
+  def get_highest_card(trick, trump, suit_led) do
+    Enum.max_by(trick, fn {_player, _team, card} ->
+      score_card(card.rank, card.suit, trump, suit_led)
+    end)
+  end
+
+  def score_card(rank, card_suit, trump, _led_suit) when card_suit == trump do
+    Deck.value(rank) + 8
+  end
+
+  def score_card(rank, card_suit, _trump, led_suit) when card_suit == led_suit do
+    Deck.value(rank)
+  end
+
+  def score_card(_rank, _card_suit, _trump, _led_suit), do: 0
 
   def game_state_reply(game) do
     %{

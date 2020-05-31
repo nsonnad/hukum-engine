@@ -16,4 +16,12 @@ defmodule HukumEngine do
   def pass(game_pid, player_id) do
     GenServer.call(game_pid, { :pass, player_id })
   end
+
+  def calling(game_pid, player_id) do
+    GenServer.call(game_pid, { :calling, player_id })
+  end
+
+  def play_card(game_pid, player_id, team, card) do
+    GenServer.call(game_pid, { :play_card, player_id, team, card })
+  end
 end
