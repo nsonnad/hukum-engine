@@ -35,6 +35,10 @@ defmodule HukumEngine.Rules do
     {:ok, %{ rules | stage: :waiting_for_first_card }}
   end
 
+  def check(%Rules{stage: :call_or_pass} = rules, :loaner) do
+    {:ok, %{ rules | stage: :playing_loaner }}
+  end
+
   def check(%Rules{stage: :waiting_for_first_card} = rules, :play_first_card) do
     {:ok, %{ rules | stage: :waiting_for_trump }}
   end

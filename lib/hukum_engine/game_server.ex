@@ -56,6 +56,16 @@ defmodule HukumEngine.GameServer do
     end
   end
 
+  ## TODO: loaner
+  def handle_call({:loaner}, _from, game) do
+    with {:ok, rules} <- Rules.check(game.rules, :loaner)
+    do
+      game |> update_rules(rules) |> reply_game_data()
+    else
+      :error -> {:reply, :error, game}
+    end
+  end
+
   def handle_call({:play_first_card, player_id, team, card}, _from, game) do
     with {:ok, rules} <- Rules.check(game.rules, :play_first_card)
     do
@@ -75,6 +85,7 @@ defmodule HukumEngine.GameServer do
       game
       |> Game.set_trump(trump, team)
       |> Game.next_turn
+      |> Game.deal_second_set
       |> Game.next_turn
       |> update_rules(rules)
       |> reply_game_data()

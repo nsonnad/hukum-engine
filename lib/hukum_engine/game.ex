@@ -61,18 +61,26 @@ defmodule HukumEngine.Game do
 
   def play_card(game, player_id, team, card) do
     current_trick = [ {player_id, team, card} | game.current_trick ]
+    {_, players} = remove_card_from_hand(game.players, player_id, card)
 
     case length(current_trick) == 4 do
       true ->
-        {hi_player, hi_team, _hi_card} = get_highest_card(game.current_trick, game.trump, game.suit_led)
+        {hi_player, hi_team, _hi_card} = get_highest_card(current_trick, game.trump, game.suit_led)
         %{game |
+          players: players,
           current_trick: [],
           hand_tricks: [ hi_team | game.hand_tricks ],
           leader: hi_player
         }
       false ->
-        %{game | current_trick: current_trick }
+        %{game | players: players, current_trick: current_trick }
     end
+  end
+
+  def remove_card_from_hand(players, player_id, card) do
+    Keyword.get_and_update(players, player_id, fn player ->
+      { player, Map.put(player, :hand, List.delete(player.hand, card))}
+    end)
   end
 
   def get_highest_card(trick, trump, suit_led) do
@@ -103,6 +111,10 @@ defmodule HukumEngine.Game do
       current_trick: game.current_trick,
       suit_trump: game.suit_trump
     }
+  end
+
+  def deal_second_set(game) do
+    %{game | players: distribute_cards(game.players, game.turn, game.deck)}
   end
 
   # helpers

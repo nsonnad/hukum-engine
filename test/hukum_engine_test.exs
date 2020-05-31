@@ -60,19 +60,21 @@ defmodule HukumEngineTest do
     assert p1_g1_hand != p1_g5_hand
   end
 
-  test "announcing calling, playing first card, setting trump" do
+  test "announcing calling, playing first card, setting trump, dealing remaining cards" do
     pid = init_game()
-    first_card = %{rank: :ace, suit: :spades}
     trump_to_call = :hearts
 
     HukumEngine.pass(pid)
     g1 = HukumEngine.calling(pid)
     p1 = Keyword.get(g1.players, g1.turn)
+    first_card = Enum.at(p1.hand, 0)
     g2 = HukumEngine.play_first_card(pid, g1.turn, p1.team, first_card)
     p2 = Keyword.get(g2.players, g2.turn)
     called = HukumEngine.call_trump(pid, trump_to_call, p2.team)
 
     assert called.suit_trump == trump_to_call
+    assert length(Keyword.get(called.players, g1.turn).hand) == 7
+    assert length(Keyword.get(called.players, g2.turn).hand) == 8
     assert Enum.member?(called.current_trick, {g1.turn, p1.team, first_card})
   end
 
