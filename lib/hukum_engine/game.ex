@@ -8,17 +8,17 @@ defmodule HukumEngine.Game do
     players: [],
     score: {0, 0},
     rules: :none,
-    dealer: nil, # int of player index
+    dealer: nil,
     leader: nil,
     deck: nil,
+    turn: nil,
     trump: :undecided
   )
 
   def new_game(rules, players \\ []) do
     %Game{
       rules: rules,
-      players: players,
-      dealer: random_player_seat()
+      players: players
     }
   end
 
@@ -31,9 +31,12 @@ defmodule HukumEngine.Game do
   # add second team
   def add_team(game = %Game{rules: %Rules{team_status: {:filled, :empty}}}, player_names) do
     team_players = player_names |> Enum.with_index |> Enum.map(&create_player(&1, 2))
-    [p1, p2, p3, p4] = game.players ++ team_players
 
-    %{game | players: [p1, p3, p2, p4] }
+    # arrange players by seat order
+    [p1, p2, p3, p4] = game.players ++ team_players
+    players = [p1, p3, p2, p4]
+
+    %{game | players: players, dealer: random_player(players) }
     |> start_new_hand
   end
 
@@ -49,23 +52,27 @@ defmodule HukumEngine.Game do
     %{ game |
       players: distribute_cards(game.players, leader, elem(deck, 0)),
       deck: elem(deck, 1),
-      leader: leader }
+      leader: leader,
+      turn: leader }
   end
 
   # Starting with the dealer, go around in a circle and give each player 4 cards
   def distribute_cards(players, _player, []), do: players
 
-  def distribute_cards(players, player_seat, [card | deck]) do
-    {key, _} = Enum.at(players, player_seat-1)
-    {_, players} = Keyword.get_and_update(players, key, fn player ->
+  def distribute_cards(players, player_kw, [card | deck]) do
+    {_, players} = Keyword.get_and_update(players, player_kw, fn player ->
       { player, Map.put(player, :hand, [ card | player.hand ]) }
     end)
-    distribute_cards(players, next_player(player_seat), deck)
+    distribute_cards(players, next_player(player_kw), deck)
   end
 
-  def next_player(_player = 4), do: 1
-  def next_player(player), do: player + 1
+  def next_player(:player_t1_p1), do: :player_t2_p1
+  def next_player(:player_t2_p1), do: :player_t1_p2
+  def next_player(:player_t1_p2), do: :player_t2_p2
+  def next_player(:player_t2_p2), do: :player_t1_p1
 
-  defp random_player_seat, do: :rand.uniform(4)
-
+  defp random_player(players) do
+    {kw, _ } = Enum.at(players, :rand.uniform(4) - 1)
+    kw
+  end
 end

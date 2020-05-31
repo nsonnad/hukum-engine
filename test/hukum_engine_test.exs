@@ -17,16 +17,19 @@ defmodule HukumEngineTest do
 
   test "start_new_hand deals each player four cards" do
     game =
-      Game.new_game(%Rules{stage: :call_or_pass})
-      |> Map.put(:players, test_players())
-      |> Game.start_new_hand
+      %Game{
+        rules: %Rules{stage: :call_or_pass},
+        players: test_players(),
+        dealer: :player_t1_p1
+      } |> Game.start_new_hand
     assert Enum.all?(game.players, fn {_, p} -> length(p.hand) == 4 end)
   end
 
   test "distribute_cards deals cards clockwise from dealer" do
     deck = elem(Enum.split(Deck.shuffled(), 16), 0)
-    dealer_seat = 1
-    players = Game.distribute_cards(test_players(), dealer_seat + 1, deck)
+    dealer = :player_t1_p1
+    players = Game.distribute_cards(test_players(), Game.next_player(dealer), deck)
+
     assert Enum.at(Keyword.get(players, :player_t2_p1).hand, 3) == Enum.at(deck, 0)
     assert Enum.at(Keyword.get(players, :player_t1_p2).hand, 3) == Enum.at(deck, 1)
     assert Enum.at(Keyword.get(players, :player_t2_p2).hand, 3) == Enum.at(deck, 2)
