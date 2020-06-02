@@ -35,8 +35,8 @@ defmodule HukumEngine.Rules do
     {:ok, %{ rules | stage: :waiting_for_first_card }}
   end
 
-  def check(%Rules{stage: :call_or_pass} = rules, :loaner) do
-    {:ok, %{ rules | stage: :playing_loaner }}
+  def check(%Rules{stage: :call_or_pass} = rules, :loner) do
+    {:ok, %{ rules | stage: :playing_loner }}
   end
 
   def check(%Rules{stage: :waiting_for_first_card} = rules, :play_first_card) do
@@ -47,7 +47,42 @@ defmodule HukumEngine.Rules do
     {:ok, %{ rules | stage: :playing_hand }}
   end
 
+  def check(%Rules{stage: :playing_hand} = rules, { :play_card, card, suit_led, hand }) do
+    case Enum.member?(hand, card) && legal_card?(card, suit_led, hand) do
+      true -> {:ok, rules}
+      false -> {:error, :illegal_card}
+    end
+  end
+
+  def check(%Rules{stage: :playing_hand} = rules, { :hand_status, _hand_trick_winners = 8}) do
+    {:ok, %{ rules | stage: :call_or_pass }}
+  end
+
+  def check(%Rules{stage: :playing_hand} = rules, { :hand_status, _hand_trick_winners}) do
+    {:ok, rules}
+  end
+
+  def check(%Rules{stage: :playing_hand} = rules, { :win_status, score }) do
+    case any_winner?(score) do
+      true -> {:ok, %{ rules | stage: :game_over }}
+      false -> {:ok, rules}
+    end
+  end
+
   def check(_state, _action), do: :error
 
   # helpers
+  defp any_winner?(score) do
+    Enum.any?(Enum.map(score, fn {_team, s} -> s end), fn s -> s >= 12 end)
+  end
+
+  defp legal_card?(card, suit_led, hand) do
+    card.suit == suit_led ||
+    !Enum.member?(suits_in_hand(hand), suit_led) ||
+    suit_led == :undecided
+  end
+
+  defp suits_in_hand(hand) do
+    Enum.map(hand, fn card -> card.suit end)
+  end
 end

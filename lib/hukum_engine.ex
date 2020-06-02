@@ -21,8 +21,8 @@ defmodule HukumEngine do
     GenServer.call(game_pid, { :calling })
   end
 
-  def loaner(game_pid) do
-    GenServer.call(game_pid, { :loaner })
+  def loner(game_pid) do
+    GenServer.call(game_pid, { :loner })
   end
 
   def play_first_card(game_pid, player_id, team, card) do

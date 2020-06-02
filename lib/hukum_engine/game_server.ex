@@ -56,7 +56,7 @@ defmodule HukumEngine.GameServer do
     end
   end
 
-  ## TODO: loaner
+  ## TODO: loner
   def handle_call({:loaner}, _from, game) do
     with {:ok, rules} <- Rules.check(game.rules, :loaner)
     do
@@ -71,6 +71,7 @@ defmodule HukumEngine.GameServer do
     do
       game
       |> Game.play_card(player_id, team, card)
+      |> Game.set_led_suit(card.suit)
       |> Game.prev_turn
       |> update_rules(rules)
       |> reply_game_data()
@@ -84,8 +85,8 @@ defmodule HukumEngine.GameServer do
     do
       game
       |> Game.set_trump(trump, team)
-      |> Game.next_turn
       |> Game.deal_second_set
+      |> Game.next_turn
       |> Game.next_turn
       |> update_rules(rules)
       |> reply_game_data()
@@ -94,16 +95,27 @@ defmodule HukumEngine.GameServer do
     end
   end
 
-  #def handle_call({:play_card, player_id, team, card}, _from, game) do
-    #with {:ok, rules} <- Rules.check(game.rules, :play_card)
-    #do
-      #game
-      #|> Game.play_card(player_id, team, card)
-      #|> update_rules(rules)
-    #else
-      #:error -> {:reply, :error, game}
-    #end
-  #end
+  def handle_call({:play_card, player_id, team, card}, _from, game) do
+    player_hand = Keyword.get(game.players, player_id).hand
+    with {:ok, rules} <-
+           Rules.check(game.rules, {:play_card, card, game.suit_led, player_hand }),
+         {:ok, game} <-
+           Game.play_card(game, player_id, team, card)
+           |> Game.check_trick
+           |> Game.check_hand(game.hand_trick_winners),
+         {:ok, rules} <-
+           Rules.check(rules, {:hand_status, game.hand_trick_winners}),
+         {:ok, rules} <-
+           Rules.check(rules, {:win_status, game.score})
+    do
+      game
+      |> update_rules(rules)
+      |> reply_game_data()
+    else
+      {:error, :illegal_card} -> {:reply, {:error, :illegal_card}, game}
+      :error -> {:reply, :error, game}
+    end
+  end
 
   defp update_rules(game, rules), do: %{ game | rules: rules }
 
