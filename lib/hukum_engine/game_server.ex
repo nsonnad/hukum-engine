@@ -101,10 +101,11 @@ defmodule HukumEngine.GameServer do
            Rules.check(game.rules, {:play_card, card, game.suit_led, player_hand }),
          {:ok, game} <-
            Game.play_card(game, player_id, team, card)
-           |> Game.check_trick
-           |> Game.check_hand(game.hand_trick_winners),
+           |> Game.check_trick,
          {:ok, rules} <-
-           Rules.check(rules, {:hand_status, game.hand_trick_winners}),
+           Rules.check(rules, {:hand_status, length(game.hand_trick_winners)}),
+         {:ok, game} <-
+           game |> Game.check_hand,
          {:ok, rules} <-
            Rules.check(rules, {:win_status, game.score})
     do

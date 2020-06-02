@@ -72,26 +72,31 @@ defmodule HukumEngine.Game do
 
   def check_trick(game) do
     case length(game.current_trick) do
-      4 -> game |> finish_trick
+      4 -> {:ok, game |> finish_trick}
       1 ->
         {_, _, card_led} = Enum.at(game.current_trick, 0)
 
-        set_led_suit(game, card_led.suit)
-        |> next_turn
-      _ -> game |> next_turn
+        {:ok, set_led_suit(game, card_led.suit) |> next_turn}
+      _ -> {:ok, game |> next_turn}
     end
   end
 
-  def check_hand(game, hand_trick_winners = 8) do
-    winning_team = hand_winning_team(hand_trick_winners, game.calling_team)
-    new_score = Map.get(game.score, winning_team) + points_to_add(winning_team, game.calling_team)
-    {:ok, %{game |
-      score: Map.put(game.score, winning_team, new_score),
-      suit_led: :undecided
-    }}
-  end
+  def check_hand(game) do
+    case length(game.hand_trick_winners) == 8 do
+      true ->
+        winning_team = hand_winning_team(game.hand_trick_winners, game.calling_team)
+        new_score = Map.get(game.score, winning_team) + points_to_add(winning_team, game.calling_team)
+        game = %{game |
+          score: Map.put(game.score, winning_team, new_score),
+          suit_led: :undecided
+        } |> start_new_hand
 
-  def check_hand(game, _hand_trick_winners), do: {:ok, game}
+        {:ok, game}
+
+      false ->
+        {:ok, game}
+    end
+  end
 
   # helpers
   # ===============================
@@ -145,6 +150,7 @@ defmodule HukumEngine.Game do
 
   def game_state_reply(game) do
     %{
+      stage: game.rules.stage,
       players: game.players,
       turn: game.turn,
       score: game.score,

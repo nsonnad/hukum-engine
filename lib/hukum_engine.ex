@@ -13,12 +13,8 @@ defmodule HukumEngine do
     GenServer.call(game_pid, { :add_team, player_names })
   end
 
-  def pass(game_pid) do
-    GenServer.call(game_pid,  { :pass })
-  end
-
-  def calling(game_pid) do
-    GenServer.call(game_pid, { :calling })
+  def call_or_pass(game_pid, choice) do
+    GenServer.call(game_pid,  { choice })
   end
 
   def loner(game_pid) do

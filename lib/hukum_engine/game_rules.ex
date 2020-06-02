@@ -55,28 +55,33 @@ defmodule HukumEngine.Rules do
   end
 
   def check(%Rules{stage: :playing_hand} = rules, { :hand_status, _hand_trick_winners = 8}) do
-    {:ok, %{ rules | stage: :call_or_pass }}
+    {:ok, %{ rules | stage: :end_of_hand }}
   end
 
   def check(%Rules{stage: :playing_hand} = rules, { :hand_status, _hand_trick_winners}) do
     {:ok, rules}
   end
 
-  def check(%Rules{stage: :playing_hand} = rules, { :win_status, score }) do
+  def check(%Rules{stage: :end_of_hand} = rules, { :win_status, score }) do
     case any_winner?(score) do
       true -> {:ok, %{ rules | stage: :game_over }}
-      false -> {:ok, rules}
+      false -> {:ok, %{ rules | stage: :call_or_pass }}
     end
+  end
+
+  def check(%Rules{stage: :playing_hand} = rules, { :win_status, _score }) do
+    {:ok, rules}
   end
 
   def check(_state, _action), do: :error
 
   # helpers
+
   defp any_winner?(score) do
     Enum.any?(Enum.map(score, fn {_team, s} -> s end), fn s -> s >= 12 end)
   end
 
-  defp legal_card?(card, suit_led, hand) do
+  def legal_card?(card, suit_led, hand) do
     card.suit == suit_led ||
     !Enum.member?(suits_in_hand(hand), suit_led) ||
     suit_led == :undecided
