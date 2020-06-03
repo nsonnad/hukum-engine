@@ -41,13 +41,13 @@ defmodule AutoTestGame do
     :timer.sleep(:rand.uniform(:timer.seconds(@timer_wait)))
     color_str(:blue, "#{game.turn} playing first card...\n")
     p = Keyword.get(game.players, game.turn)
-    {HukumEngine.play_first_card(pid, game.turn, p.team, Enum.random(p.hand)), pid}
+    {HukumEngine.play_first_card(pid, game.turn, Enum.random(p.hand)), pid}
   end
 
   def call_trump({game, pid}) do
     :timer.sleep(:rand.uniform(:timer.seconds(@timer_wait)))
     trump = Enum.random(@suits)
-    {_, _, initial_card} = Enum.at(game.current_trick, 0)
+    {_, initial_card} = Enum.at(game.current_trick, 0)
     color_str(:green, "#{game.turn} calls #{trump}\n")
     :timer.sleep(:rand.uniform(:timer.seconds(@timer_wait)))
     color_str(:magenta, "First card was: #{initial_card.rank} of #{initial_card.suit}\n")
@@ -60,7 +60,7 @@ defmodule AutoTestGame do
     p = Keyword.get(game.players, game.turn)
     card_to_play = best_valid_card(game.suit_trump, game.suit_led, p.hand)
     color_str(:magenta, "#{game.turn} leads: #{card_to_play.rank} of #{card_to_play.suit}\n")
-    game = HukumEngine.play_card(pid, game.turn, p.team, card_to_play)
+    game = HukumEngine.play_card(pid, game.turn, card_to_play)
     play_tricks({game, pid})
   end
 
@@ -69,7 +69,7 @@ defmodule AutoTestGame do
     p = Keyword.get(game.players, game.turn)
     card_to_play = best_valid_card(game.suit_trump, game.suit_led, p.hand)
     color_str(:blue, "#{game.turn} plays: #{card_to_play.rank} of #{card_to_play.suit}\n")
-    game = HukumEngine.play_card(pid, game.turn, p.team, card_to_play)
+    game = HukumEngine.play_card(pid, game.turn, card_to_play)
     play_tricks({game, pid})
   end
 

@@ -21,15 +21,15 @@ defmodule HukumEngine do
     GenServer.call(game_pid, { :loner })
   end
 
-  def play_first_card(game_pid, player_id, team, card) do
-    GenServer.call(game_pid, { :play_first_card, player_id, team, card })
+  def play_first_card(game_pid, player_id, card) do
+    GenServer.call(game_pid, { :play_first_card, player_id, card })
   end
 
   def call_trump(game_pid, trump, team) do
     GenServer.call(game_pid, { :call_trump, trump, team })
   end
 
-  def play_card(game_pid, player_id, team, card) do
-    GenServer.call(game_pid, { :play_card, player_id, team, card })
+  def play_card(game_pid, player_id, card) do
+    GenServer.call(game_pid, { :play_card, player_id, card })
   end
 end

@@ -66,11 +66,11 @@ defmodule HukumEngine.GameServer do
     end
   end
 
-  def handle_call({:play_first_card, player_id, team, card}, _from, game) do
+  def handle_call({:play_first_card, player_id, card}, _from, game) do
     with {:ok, rules} <- Rules.check(game.rules, :play_first_card)
     do
       game
-      |> Game.play_card(player_id, team, card)
+      |> Game.play_card(player_id, card)
       |> Game.set_led_suit(card.suit)
       |> Game.prev_turn
       |> update_rules(rules)
@@ -95,12 +95,12 @@ defmodule HukumEngine.GameServer do
     end
   end
 
-  def handle_call({:play_card, player_id, team, card}, _from, game) do
+  def handle_call({:play_card, player_id, card}, _from, game) do
     player_hand = Keyword.get(game.players, player_id).hand
     with {:ok, rules} <-
            Rules.check(game.rules, {:play_card, card, game.suit_led, player_hand }),
          {:ok, game} <-
-           Game.play_card(game, player_id, team, card)
+           Game.play_card(game, player_id, card)
            |> Game.check_trick,
          {:ok, rules} <-
            Rules.check(rules, {:hand_status, length(game.hand_trick_winners)}),

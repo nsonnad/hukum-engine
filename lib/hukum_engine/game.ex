@@ -64,8 +64,8 @@ defmodule HukumEngine.Game do
       turn: turn }
   end
 
-  def play_card(game, player_id, team, card) do
-    current_trick = [ {player_id, team, card} | game.current_trick ]
+  def play_card(game, player_id, card) do
+    current_trick = [ {player_id, card} | game.current_trick ]
     {_, players} = remove_card_from_hand(game.players, player_id, card)
     %{game | players: players, current_trick: current_trick }
   end
@@ -74,8 +74,7 @@ defmodule HukumEngine.Game do
     case length(game.current_trick) do
       4 -> {:ok, game |> finish_trick}
       1 ->
-        {_, _, card_led} = Enum.at(game.current_trick, 0)
-
+        {_, card_led} = Enum.at(game.current_trick, 0)
         {:ok, set_led_suit(game, card_led.suit) |> next_turn}
       _ -> {:ok, game |> next_turn}
     end
@@ -113,7 +112,8 @@ defmodule HukumEngine.Game do
   end
 
   def finish_trick(game) do
-    {hi_player, hi_team, _hi_card} = get_highest_card(game.current_trick, game.suit_trump, game.suit_led)
+    {hi_player, _hi_card} = get_highest_card(game.current_trick, game.suit_trump, game.suit_led)
+    hi_team = get_player_team(game.players, hi_player)
     %{game |
       turn: hi_player,
       suit_led: :undecided,
@@ -129,9 +129,13 @@ defmodule HukumEngine.Game do
   end
 
   def get_highest_card(trick, trump, suit_led) do
-    Enum.max_by(trick, fn {_player, _team, card} ->
+    Enum.max_by(trick, fn {_player, card} ->
       score_card(card.rank, card.suit, trump, suit_led)
     end)
+  end
+
+  defp get_player_team(players, player) do
+    Keyword.get(players, player).team
   end
 
   def score_card(rank, card_suit, trump, _led_suit) when card_suit == trump do

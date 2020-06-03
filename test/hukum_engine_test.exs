@@ -68,40 +68,40 @@ defmodule HukumEngineTest do
     g1 = HukumEngine.call_or_pass(pid, :calling)
     p1 = Keyword.get(g1.players, g1.turn)
     first_card = Enum.at(p1.hand, 0)
-    g2 = HukumEngine.play_first_card(pid, g1.turn, p1.team, first_card)
+    g2 = HukumEngine.play_first_card(pid, g1.turn, first_card)
     p2 = Keyword.get(g2.players, g2.turn)
     called = HukumEngine.call_trump(pid, trump_to_call, p2.team)
 
     assert called.suit_trump == trump_to_call
     assert length(Keyword.get(called.players, g1.turn).hand) == 7
     assert length(Keyword.get(called.players, g2.turn).hand) == 8
-    assert Enum.member?(called.current_trick, {g1.turn, p1.team, first_card})
+    assert Enum.member?(called.current_trick, {g1.turn, first_card})
   end
 
   test "getting the highest card from a trick" do
     trump_trick = [
-      {:player_t1_p1, 1, %{rank: 7, suit: :diamonds}},
-      {:player_t2_p1, 2, %{rank: :ace, suit: :clubs}},
-      {:player_t1_p2, 1, %{rank: :king, suit: :clubs}},
-      {:player_t2_p2, 2, %{rank: 10, suit: :hearts}},
+      {:player_t1_p1, %{rank: 7, suit: :diamonds}},
+      {:player_t2_p1, %{rank: :ace, suit: :clubs}},
+      {:player_t1_p2, %{rank: :king, suit: :clubs}},
+      {:player_t2_p2, %{rank: 10, suit: :hearts}},
     ]
     trump_trick2 = [
-      {:player_t1_p1, 1, %{rank: 7, suit: :hearts}},
-      {:player_t2_p1, 2, %{rank: 9, suit: :hearts}},
-      {:player_t1_p2, 1, %{rank: :ace, suit: :spades}},
-      {:player_t2_p2, 2, %{rank: 10, suit: :hearts}},
+      {:player_t1_p1, %{rank: 7, suit: :hearts}},
+      {:player_t2_p1, %{rank: 9, suit: :hearts}},
+      {:player_t1_p2, %{rank: :ace, suit: :spades}},
+      {:player_t2_p2, %{rank: 10, suit: :hearts}},
     ]
     suit_trick = [
-      {:player_t1_p1, 1, %{rank: 7, suit: :diamonds}},
-      {:player_t2_p1, 2, %{rank: 8, suit: :diamonds}},
-      {:player_t1_p2, 1, %{rank: :king, suit: :diamonds}},
-      {:player_t2_p2, 2, %{rank: :ace, suit: :diamonds}},
+      {:player_t1_p1, %{rank: 7, suit: :diamonds}},
+      {:player_t2_p1, %{rank: 8, suit: :diamonds}},
+      {:player_t1_p2, %{rank: :king, suit: :diamonds}},
+      {:player_t2_p2, %{rank: :ace, suit: :diamonds}},
     ]
     offsuit_trick = [
-      {:player_t1_p1, 1, %{rank: 7, suit: :diamonds}},
-      {:player_t2_p1, 2, %{rank: 8, suit: :clubs}},
-      {:player_t1_p2, 1, %{rank: :king, suit: :diamonds}},
-      {:player_t2_p2, 2, %{rank: :ace, suit: :diamonds}},
+      {:player_t1_p1, %{rank: 7, suit: :diamonds}},
+      {:player_t2_p1, %{rank: 8, suit: :clubs}},
+      {:player_t1_p2, %{rank: :king, suit: :diamonds}},
+      {:player_t2_p2, %{rank: :ace, suit: :diamonds}},
     ]
 
     assert Game.get_highest_card(trump_trick, :diamonds, :clubs) == Enum.at(trump_trick, 0)
