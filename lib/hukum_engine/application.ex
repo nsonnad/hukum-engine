@@ -1,13 +1,13 @@
 defmodule HukumEngine.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
-  @moduledoc false
+
+  @registry :game_registry
 
   use Application
 
   def start(_type, _args) do
     children = [
-      {HukumEngine.GameSupervisor, []}
+      { HukumEngine.GameSupervisor, [] },
+      { Registry, [keys: :unique, name: @registry] }
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

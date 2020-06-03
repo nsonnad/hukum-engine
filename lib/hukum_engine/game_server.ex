@@ -3,17 +3,27 @@ defmodule HukumEngine.GameServer do
   # GenServer for a game. It takes incoming calls and coordinates them with
   # the `Rules` state machine, making sure corresponding updates to the `Game`
   # state happen at the appropriate times.
+  use GenServer
+  require Logger
 
   alias HukumEngine.{Game, Rules}
 
-  use GenServer
+  @registry :game_registry
 
-  def start_link(_) do
-    GenServer.start_link(__MODULE__, nil)
+  def start_link(game_id) do
+    GenServer.start_link(__MODULE__, game_id, name: via_tuple(game_id))
   end
 
-  def init(_) do
-    { :ok, Game.new_game(%Rules{}) }
+  def stop_game(name), do: GenServer.stop(via_tuple(name))
+
+  def terminate(reason, game) do
+    Logger.info("Exiting game #{game.id} with reason: #{inspect reason}")
+  end
+
+  def via_tuple(game_id), do: {:via, Registry, {@registry, game_id}}
+
+  def init(game_id) do
+    { :ok, Game.new_game(game_id, %Rules{}) }
   end
 
   def handle_call({ :get_game_state }, _from, game) do

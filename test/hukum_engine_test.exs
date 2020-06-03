@@ -5,14 +5,15 @@ defmodule HukumEngineTest do
   alias HukumEngine.{Deck, Game, GameServer, Player, Rules}
 
   test "HukumEngine.new_game creates a process and PID" do
-    assert is_pid(HukumEngine.new_game)
+    {:ok, pid} = HukumEngine.new_game("GAME1")
+    assert is_pid(pid)
   end
 
   test "adding two teams is :ok, more throws an error" do
-    pid = HukumEngine.new_game()
-    assert HukumEngine.add_team(pid, ["player1", "player2"]) == :ok
-    assert HukumEngine.add_team(pid, ["player3", "player4"]) == :ok
-    assert HukumEngine.add_team(pid, ["player5", "player6"]) == :error
+    HukumEngine.new_game("GAME2")
+    assert HukumEngine.add_team(via("GAME2"), ["player1", "player2"]) == :ok
+    assert HukumEngine.add_team(via("GAME2"), ["player3", "player4"]) == :ok
+    assert HukumEngine.add_team(via("GAME2"), ["player5", "player6"]) == :error
   end
 
   test "start_new_hand deals each player four cards" do
@@ -37,19 +38,19 @@ defmodule HukumEngineTest do
   end
 
   test "passing advances the turn to the next player" do
-    pid = init_game()
-    game = HukumEngine.get_game_state(pid)
-    new_game = HukumEngine.call_or_pass(pid, game.turn, :pass)
+    init_game("GAME3")
+    game = HukumEngine.get_game_state(via("GAME3"))
+    new_game = HukumEngine.call_or_pass(via("GAME3"), game.turn, :pass)
     assert new_game.turn == Game.next_player(game.turn)
   end
 
   test "four passes deals a new hand and restarts the call or pass process" do
-    pid = init_game()
-    g1 = HukumEngine.get_game_state(pid)
-    g2 = HukumEngine.call_or_pass(pid, g1.turn, :pass)
-    g3 = HukumEngine.call_or_pass(pid, g2.turn, :pass)
-    g4 = HukumEngine.call_or_pass(pid, g3.turn, :pass)
-    g5 = HukumEngine.call_or_pass(pid, g4.turn, :pass)
+    init_game("GAME4")
+    g1 = HukumEngine.get_game_state(via("GAME4"))
+    g2 = HukumEngine.call_or_pass(via("GAME4"), g1.turn, :pass)
+    g3 = HukumEngine.call_or_pass(via("GAME4"), g2.turn, :pass)
+    g4 = HukumEngine.call_or_pass(via("GAME4"), g3.turn, :pass)
+    g5 = HukumEngine.call_or_pass(via("GAME4"), g4.turn, :pass)
     p1_g1_hand = Keyword.get(g1.players, :player_t1_p1).hand
     p1_g4_hand = Keyword.get(g4.players, :player_t1_p1).hand
     p1_g5_hand = Keyword.get(g5.players, :player_t1_p1).hand
@@ -61,24 +62,24 @@ defmodule HukumEngineTest do
   end
 
   test "playing out of turn returns an error" do
-    pid = init_game()
-    g0 = HukumEngine.get_game_state(pid)
-    assert HukumEngine.call_or_pass(pid, Game.next_player(g0.turn), :pass) == {:error, :not_your_turn}
-    assert HukumEngine.call_or_pass(pid, Game.next_player(g0.turn), :calling) == {:error, :not_your_turn}
+    init_game("GAME5")
+    g0 = HukumEngine.get_game_state(via("GAME5"))
+    assert HukumEngine.call_or_pass(via("GAME5"), Game.next_player(g0.turn), :pass) == {:error, :not_your_turn}
+    assert HukumEngine.call_or_pass(via("GAME5"), Game.next_player(g0.turn), :calling) == {:error, :not_your_turn}
   end
 
   test "announcing calling, playing first card, setting trump, dealing remaining cards" do
-    pid = init_game()
+    init_game("GAME6")
     trump_to_call = :hearts
-    g0 = HukumEngine.get_game_state(pid)
+    g0 = HukumEngine.get_game_state(via("GAME6"))
 
-    g1 = HukumEngine.call_or_pass(pid, g0.turn, :pass)
-    g2 = HukumEngine.call_or_pass(pid, g1.turn, :calling)
+    g1 = HukumEngine.call_or_pass(via("GAME6"), g0.turn, :pass)
+    g2 = HukumEngine.call_or_pass(via("GAME6"), g1.turn, :calling)
     p1 = Keyword.get(g1.players, g2.turn)
     first_card = Enum.at(p1.hand, 0)
-    g3 = HukumEngine.play_first_card(pid, g2.turn, first_card)
+    g3 = HukumEngine.play_first_card(via("GAME6"), g2.turn, first_card)
     p2 = Keyword.get(g2.players, g1.turn)
-    called = HukumEngine.call_trump(pid, g3.turn, trump_to_call, p2.team)
+    called = HukumEngine.call_trump(via("GAME6"), g3.turn, trump_to_call, p2.team)
 
     assert called.suit_trump == trump_to_call
     assert length(Keyword.get(called.players, g2.turn).hand) == 7
@@ -120,13 +121,12 @@ defmodule HukumEngineTest do
 
   # helpers
   # =====================================
+  def via(id), do: GameServer.via_tuple(id)
 
-
-  def init_game() do
-    pid = HukumEngine.new_game()
-    HukumEngine.add_team(pid, ["player1", "player2"])
-    HukumEngine.add_team(pid, ["player3", "player4"])
-    pid
+  def init_game(game_id) do
+    HukumEngine.new_game(game_id)
+    HukumEngine.add_team(via(game_id), ["player1", "player2"])
+    HukumEngine.add_team(via(game_id), ["player3", "player4"])
   end
 
   defp test_players() do

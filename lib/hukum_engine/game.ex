@@ -5,6 +5,7 @@ defmodule HukumEngine.Game do
   @deck_size 32
 
   defstruct(
+    id: nil,
     players: [],
     score: %{ 1 => 0, 2 => 0},
     rules: :none,
@@ -21,8 +22,8 @@ defmodule HukumEngine.Game do
   # API-level
   # ===============================
 
-  def new_game(rules, players \\ []) do
-    %Game{ rules: rules, players: players }
+  def new_game(game_id, rules, players \\ []) do
+    %Game{ id: game_id, rules: rules, players: players }
   end
 
   # add first team
@@ -154,6 +155,7 @@ defmodule HukumEngine.Game do
 
   def game_state_reply(game) do
     %{
+      id: game.id,
       stage: game.rules.stage,
       players: game.players,
       turn: game.turn,
