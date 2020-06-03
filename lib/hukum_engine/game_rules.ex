@@ -27,6 +27,14 @@ defmodule HukumEngine.Rules do
     end
   end
 
+  def check(rules, {:correct_turn, player_id, turn}) when player_id == turn do
+    {:ok, rules}
+  end
+
+  def check(_rules, {:correct_turn, _player_id, _turn}) do
+    {:error, :not_your_turn}
+  end
+
   def check(%Rules{stage: :call_or_pass} = rules, :pass) do
     {:ok, rules}
   end

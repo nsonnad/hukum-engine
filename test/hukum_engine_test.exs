@@ -39,17 +39,17 @@ defmodule HukumEngineTest do
   test "passing advances the turn to the next player" do
     pid = init_game()
     game = HukumEngine.get_game_state(pid)
-    new_game = HukumEngine.call_or_pass(pid, :pass)
+    new_game = HukumEngine.call_or_pass(pid, game.turn, :pass)
     assert new_game.turn == Game.next_player(game.turn)
   end
 
   test "four passes deals a new hand and restarts the call or pass process" do
     pid = init_game()
     g1 = HukumEngine.get_game_state(pid)
-    g2 = HukumEngine.call_or_pass(pid, :pass)
-    g3 = HukumEngine.call_or_pass(pid, :pass)
-    g4 = HukumEngine.call_or_pass(pid, :pass)
-    g5 = HukumEngine.call_or_pass(pid, :pass)
+    g2 = HukumEngine.call_or_pass(pid, g1.turn, :pass)
+    g3 = HukumEngine.call_or_pass(pid, g2.turn, :pass)
+    g4 = HukumEngine.call_or_pass(pid, g3.turn, :pass)
+    g5 = HukumEngine.call_or_pass(pid, g4.turn, :pass)
     p1_g1_hand = Keyword.get(g1.players, :player_t1_p1).hand
     p1_g4_hand = Keyword.get(g4.players, :player_t1_p1).hand
     p1_g5_hand = Keyword.get(g5.players, :player_t1_p1).hand
@@ -60,22 +60,30 @@ defmodule HukumEngineTest do
     assert p1_g1_hand != p1_g5_hand
   end
 
+  test "playing out of turn returns an error" do
+    pid = init_game()
+    g0 = HukumEngine.get_game_state(pid)
+    assert HukumEngine.call_or_pass(pid, Game.next_player(g0.turn), :pass) == {:error, :not_your_turn}
+    assert HukumEngine.call_or_pass(pid, Game.next_player(g0.turn), :calling) == {:error, :not_your_turn}
+  end
+
   test "announcing calling, playing first card, setting trump, dealing remaining cards" do
     pid = init_game()
     trump_to_call = :hearts
+    g0 = HukumEngine.get_game_state(pid)
 
-    HukumEngine.call_or_pass(pid, :pass)
-    g1 = HukumEngine.call_or_pass(pid, :calling)
-    p1 = Keyword.get(g1.players, g1.turn)
+    g1 = HukumEngine.call_or_pass(pid, g0.turn, :pass)
+    g2 = HukumEngine.call_or_pass(pid, g1.turn, :calling)
+    p1 = Keyword.get(g1.players, g2.turn)
     first_card = Enum.at(p1.hand, 0)
-    g2 = HukumEngine.play_first_card(pid, g1.turn, first_card)
-    p2 = Keyword.get(g2.players, g2.turn)
-    called = HukumEngine.call_trump(pid, trump_to_call, p2.team)
+    g3 = HukumEngine.play_first_card(pid, g2.turn, first_card)
+    p2 = Keyword.get(g2.players, g1.turn)
+    called = HukumEngine.call_trump(pid, g3.turn, trump_to_call, p2.team)
 
     assert called.suit_trump == trump_to_call
-    assert length(Keyword.get(called.players, g1.turn).hand) == 7
-    assert length(Keyword.get(called.players, g2.turn).hand) == 8
-    assert Enum.member?(called.current_trick, {g1.turn, first_card})
+    assert length(Keyword.get(called.players, g2.turn).hand) == 7
+    assert length(Keyword.get(called.players, g3.turn).hand) == 8
+    assert Enum.member?(called.current_trick, {g2.turn, first_card})
   end
 
   test "getting the highest card from a trick" do

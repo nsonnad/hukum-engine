@@ -27,14 +27,14 @@ defmodule AutoTestGame do
   def decide_trump({game, pid}, :pass) do
     :timer.sleep(:rand.uniform(:timer.seconds(@timer_wait)))
     color_str(:yellow, "#{game.turn} decides to pass...\n")
-    game = HukumEngine.call_or_pass(pid, :pass)
+    game = HukumEngine.call_or_pass(pid, game.turn, :pass)
     decide_trump({game, pid}, Enum.random(@call_or_pass))
   end
 
   def decide_trump({game, pid}, :calling) do
     :timer.sleep(:rand.uniform(:timer.seconds(@timer_wait)))
     color_str(:green, "#{game.turn} decides to call...\n")
-    {HukumEngine.call_or_pass(pid, :calling), pid}
+    {HukumEngine.call_or_pass(pid, game.turn, :calling), pid}
   end
 
   def first_card({game, pid}) do
@@ -52,7 +52,7 @@ defmodule AutoTestGame do
     :timer.sleep(:rand.uniform(:timer.seconds(@timer_wait)))
     color_str(:magenta, "First card was: #{initial_card.rank} of #{initial_card.suit}\n")
     p = Keyword.get(game.players, game.turn)
-    {HukumEngine.call_trump(pid, trump, p.team), pid}
+    {HukumEngine.call_trump(pid, game.turn, trump, p.team), pid}
   end
 
   def play_tricks({game = %{stage: :playing_hand, suit_led: :undecided}, pid}) do

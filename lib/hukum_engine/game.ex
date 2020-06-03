@@ -75,7 +75,7 @@ defmodule HukumEngine.Game do
       4 -> {:ok, game |> finish_trick}
       1 ->
         {_, card_led} = Enum.at(game.current_trick, 0)
-        {:ok, set_led_suit(game, card_led.suit) |> next_turn}
+        {:ok, set_suit_led(game, card_led.suit) |> next_turn}
       _ -> {:ok, game |> next_turn}
     end
   end
@@ -99,7 +99,7 @@ defmodule HukumEngine.Game do
 
   # helpers
   # ===============================
-  def set_led_suit(game, suit), do: %{game | suit_led: suit}
+  def set_suit_led(game, suit), do: %{game | suit_led: suit}
 
   def points_to_add(winning_team, calling_team) when winning_team == calling_team, do: 1
   def points_to_add(winning_team, calling_team) when winning_team != calling_team, do: 2
