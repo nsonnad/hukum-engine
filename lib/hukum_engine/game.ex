@@ -46,7 +46,7 @@ defmodule HukumEngine.Game do
 
   def create_player({ name, index }, team_number) do
     player_id = String.to_atom("player_t#{team_number}_p#{index+1}")
-    { player_id, %Player{name: name, team: team_number }}
+    { player_id, Player.new(name, team_number)}
   end
 
   def start_new_hand(game) do
