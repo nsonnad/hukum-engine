@@ -30,15 +30,44 @@ defmodule HukumEngine.GameServer do
     reply_game_data(game)
   end
 
-  def handle_call({:add_team, player_names}, _from, game) do
-    with {:ok, rules} <- Rules.check(game.rules, :add_team)
+  def handle_call({:add_player, player_name}, _from, game) do
+    with {:ok, rules} <- Rules.check(game.rules, {:add_player, player_name, game.players})
     do
       game
-      |> Game.add_team(player_names)
+      |> Game.add_player(player_name)
+      |> update_rules(rules)
+      |> reply_success(:ok)
+    else
+      {:error, :game_full} -> {:reply, {:error, :game_full}, game}
+      :error -> {:reply, :error, game}
+    end
+  end
+
+  def handle_call({:choose_team, player_name, team}, _from, game) do
+    with {:ok, rules} <- Rules.check(game.rules, {:choose_team, team, team_counts(game.players)})
+    do
+      game
+      |> Game.choose_team(player_name, team)
       |> update_rules(rules)
       |> reply_success(:ok)
     else
       {:error, :teams_full} -> {:reply, {:error, :teams_full}, game}
+      {:error, :team_full} -> {:reply, {:error, :team_full}, game}
+      :error -> {:reply, :error, game}
+    end
+  end
+
+  def handle_call({:confirm_teams}, _from, game) do
+    with {:ok, rules} <- Rules.check(game.rules, {:confirm_teams, team_counts(game.players)})
+    do
+      game
+      |> Game.assign_random_dealer
+      |> Game.sort_players
+      |> Game.start_new_hand
+      |> update_rules(rules)
+      |> reply_game_data()
+    else
+      {:error, :teams_not_filled} -> {:reply, {:error, :teams_not_filled}, game}
       :error -> {:reply, :error, game}
     end
   end
@@ -135,6 +164,14 @@ defmodule HukumEngine.GameServer do
       {:error, :illegal_card} -> {:reply, {:error, :illegal_card}, game}
       :error -> {:reply, :error, game}
     end
+  end
+
+
+  defp team_counts(players) do
+    [1, 2]
+    |> Enum.map(fn num ->
+      length(Enum.filter(Keyword.values(players), fn p -> p.team == num end))
+    end)
   end
 
   defp update_rules(game, rules), do: %{ game | rules: rules }

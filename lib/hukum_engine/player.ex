@@ -8,8 +8,8 @@ defmodule HukumEngine.Player do
     team: :unassigned
   )
 
-  def new(name, team_number) do
-    %Player{name: name, team: team_number}
+  def new(name) do
+    %Player{name: name}
   end
 end
 

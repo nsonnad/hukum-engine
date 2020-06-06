@@ -9,22 +9,48 @@ defmodule HukumEngine.Rules do
   # more tk...
 
   defstruct(
-    stage: :waiting_for_teams,
-    team_status: {:empty, :empty}
+    stage: :waiting_for_players
   )
 
   def new(), do: %Rules{}
 
-  def check(%Rules{stage: :waiting_for_teams} = rules, :add_team) do
-    case rules.team_status do
-      {:empty, :empty} ->
-        {:ok, %Rules{ rules | team_status: {:filled, :empty }}}
-      {:filled, :empty} ->
-        {:ok, %Rules{ rules |
-          team_status: {:filled, :filled}, stage: :call_or_pass }}
-      {:filled, :filled} ->
-        {:error, :teams_full}
+  def check(%Rules{stage: :waiting_for_players} = _rules, {:add_player, _player_name, players})
+  when length(players) == 4 do
+    {:error, :game_full}
+  end
+
+  def check(%Rules{stage: :waiting_for_players} = rules, {:add_player, player_name, players})
+  when length(players) == 3 do
+    case !username_taken?(players, player_name) do
+      true -> {:ok, %Rules{ rules | stage: :choosing_teams}}
+      false -> {:error, :username_taken}
     end
+  end
+
+  def check(%Rules{stage: :waiting_for_players} = rules, {:add_player, player_name, players}) do
+    case !username_taken?(players, player_name) do
+      true -> {:ok, rules}
+      false -> {:error, :username_taken}
+    end
+  end
+
+  def check(%Rules{stage: :choosing_teams} = _rules, { :choose_team, _team, _team_counts = [2, 2] }) do
+    {:error, :teams_full}
+  end
+
+  def check(%Rules{stage: :choosing_teams} = rules, { :choose_team, team, team_counts}) do
+    case Enum.at(team_counts, team - 1) do
+      count when count < 2 -> {:ok, rules}
+      2 -> {:error, :team_full}
+    end
+  end
+
+  def check(%Rules{stage: :choosing_teams} = rules, { :confirm_teams, _team_counts = [2, 2] }) do
+    {:ok, %Rules{ rules | stage: :call_or_pass }}
+  end
+
+  def check(%Rules{stage: :choosing_teams} = _rules, { :confirm_teams, _team_counts }) do
+    {:error, :teams_not_filled}
   end
 
   def check(rules, {:correct_turn, player_id, turn}) when player_id == turn do
@@ -84,6 +110,10 @@ defmodule HukumEngine.Rules do
   def check(_state, _action), do: :error
 
   # helpers
+
+  defp username_taken?(players, player_name) do
+    Enum.member?(Keyword.keys(players), player_name)
+  end
 
   defp any_winner?(score) do
     Enum.any?(Enum.map(score, fn {_team, s} -> s end), fn s -> s >= 12 end)

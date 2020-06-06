@@ -8,8 +8,16 @@ defmodule HukumEngine do
     GenServer.call(game, { :get_game_state })
   end
 
-  def add_team(game, player_names) do
-    GenServer.call(game, { :add_team, player_names })
+  def add_player(game, player_name) do
+    GenServer.call(game, { :add_player, player_name })
+  end
+
+  def choose_team(game, player_name, team) do
+    GenServer.call(game, { :choose_team, player_name, team })
+  end
+
+  def confirm_teams(game) do
+    GenServer.call(game, { :confirm_teams })
   end
 
   def call_or_pass(game, player_id, choice) do

@@ -23,35 +23,32 @@ defmodule HukumEngine.Game do
   # ===============================
 
   def new_game(game_id, rules, players \\ []) do
-    %Game{ id: game_id, rules: rules, players: players }
+    %Game{
+      id: game_id,
+      rules: rules,
+      players: players
+    }
   end
 
   # add first team
-  def add_team(game = %Game{rules: %Rules{team_status: {:empty, :empty}}}, player_names) do
-    team_players = player_names |> Enum.with_index |> Enum.map(&create_player(&1, 1))
-    %{game | players: team_players }
+  def add_player(game, player_name) do
+    %{game | players: [ create_player(player_name) | game.players ] }
   end
 
-  # add second team
-  def add_team(game = %Game{rules: %Rules{team_status: {:filled, :empty}}}, player_names) do
-    team_players = player_names |> Enum.with_index |> Enum.map(&create_player(&1, 2))
-
-    # arrange players by seat order
-    [p1, p2, p3, p4] = game.players ++ team_players
-    players = [p1, p3, p2, p4]
-
-    %{game | players: players, dealer: random_player(players) }
-    |> start_new_hand
+  def create_player(player_name) do
+    { player_name, Player.new(Atom.to_string(player_name))}
   end
 
-  def create_player({ name, index }, team_number) do
-    player_id = String.to_atom("player_t#{team_number}_p#{index+1}")
-    { player_id, Player.new(name, team_number)}
+  def choose_team(game, player_name, team) do
+    players = Keyword.update(game.players, player_name, [], fn p ->
+      %{p | team: team}
+    end)
+    %{ game | players: players }
   end
 
   def start_new_hand(game) do
     deck = Enum.split(Deck.shuffled(), div(@deck_size, 2))
-    turn = next_player(game.dealer)
+    turn = next_player(game.players, game.dealer)
     players =
       game.players
       |> clear_hands
@@ -96,6 +93,18 @@ defmodule HukumEngine.Game do
       false ->
         {:ok, game}
     end
+  end
+
+  def sort_players(game) do
+    {t1, t2} = Enum.split_with(game.players, fn {_k, p} -> p.team == 1 end)
+
+    # start with 1 instead of 0 becuase [ head | tail ] operation puts new
+    # elements at the beginning
+    %{game | players: [Enum.at(t1, 1), Enum.at(t2, 1), Enum.at(t1, 0), Enum.at(t2, 0)]}
+  end
+
+  def assign_random_dealer(game) do
+    %{ game | dealer: random_player(game.players) }
   end
 
   # helpers
@@ -179,27 +188,35 @@ defmodule HukumEngine.Game do
   def distribute_cards(players, _player, []), do: players
 
   def distribute_cards(players, player_id, [card | deck]) do
-    {_, players} = Keyword.get_and_update(players, player_id, fn player ->
-      { player, Map.put(player, :hand, [ card | player.hand ]) }
+    players = Keyword.update(players, player_id, [], fn player ->
+      Map.put(player, :hand, [ card | player.hand ])
     end)
-    distribute_cards(players, next_player(player_id), deck)
+    distribute_cards(players, next_player(players, player_id), deck)
   end
 
   def other_team(1), do: 2
   def other_team(2), do: 1
 
-  def next_turn(game), do: %{game | turn: next_player(game.turn)}
-  def prev_turn(game), do: %{game | turn: prev_player(game.turn)}
+  def next_turn(game), do: %{game | turn: next_player(game.players, game.turn)}
+  def prev_turn(game), do: %{game | turn: prev_player(game.players, game.turn)}
 
-  def next_player(:player_t1_p1), do: :player_t2_p1
-  def next_player(:player_t2_p1), do: :player_t1_p2
-  def next_player(:player_t1_p2), do: :player_t2_p2
-  def next_player(:player_t2_p2), do: :player_t1_p1
+  def next_player(players, player_name) do
+    player_keys = Keyword.keys(players)
+    curr_index = Enum.find_index(player_keys, fn k -> k == player_name end)
+    Enum.at(player_keys, next_player_index(curr_index))
+  end
 
-  def prev_player(:player_t1_p1), do: :player_t2_p2
-  def prev_player(:player_t2_p1), do: :player_t1_p1
-  def prev_player(:player_t1_p2), do: :player_t2_p1
-  def prev_player(:player_t2_p2), do: :player_t1_p2
+  def prev_player(players, player_name) do
+    player_keys = Keyword.keys(players)
+    curr_index = Enum.find_index(player_keys, fn k -> k == player_name end)
+    Enum.at(player_keys, prev_player_index(curr_index))
+  end
+
+  def next_player_index(3), do: 0
+  def next_player_index(ix), do: ix + 1
+
+  def prev_player_index(0), do: 3
+  def prev_player_index(ix), do: ix - 1
 
   defp random_player(players) do
     {kw, _ } = Enum.at(players, :rand.uniform(4) - 1)

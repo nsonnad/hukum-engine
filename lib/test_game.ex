@@ -9,8 +9,18 @@ defmodule AutoTestGame do
   def run do
     game_id = "game_1"
     HukumEngine.new_game(game_id)
-    HukumEngine.add_team(via(game_id), ["player1", "player2"])
-    HukumEngine.add_team(via(game_id), ["player3", "player4"])
+    HukumEngine.add_player(via(game_id), :john)
+    HukumEngine.add_player(via(game_id), :paul)
+    HukumEngine.add_player(via(game_id), :george)
+    HukumEngine.add_player(via(game_id), :ringo)
+
+    HukumEngine.choose_team(via(game_id), :john, 1)
+    HukumEngine.choose_team(via(game_id), :george, 1)
+    HukumEngine.choose_team(via(game_id), :paul, 2)
+    HukumEngine.choose_team(via(game_id), :ringo, 2)
+
+    HukumEngine.confirm_teams(via(game_id))
+
     game = HukumEngine.get_game_state(via(game_id))
     start_hand({game, via(game_id)})
   end
