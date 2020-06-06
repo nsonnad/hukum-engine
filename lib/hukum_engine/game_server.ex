@@ -46,10 +46,11 @@ defmodule HukumEngine.GameServer do
   def handle_call({:choose_team, player_name, team}, _from, game) do
     with {:ok, rules} <- Rules.check(game.rules, {:choose_team, team, team_counts(game.players)})
     do
-      game
+      game = game
       |> Game.choose_team(player_name, team)
       |> update_rules(rules)
-      |> reply_success(:ok)
+
+      {:reply, {:ok, team_counts(game.players)}, game}
     else
       {:error, :teams_full} -> {:reply, {:error, :teams_full}, game}
       {:error, :team_full} -> {:reply, {:error, :team_full}, game}
