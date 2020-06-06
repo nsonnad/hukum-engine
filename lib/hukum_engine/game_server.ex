@@ -50,7 +50,7 @@ defmodule HukumEngine.GameServer do
       |> Game.choose_team(player_name, team)
       |> update_rules(rules)
 
-      {:reply, {:ok, team_counts(game.players)}, game}
+      {:reply, {:ok, %{team_counts: team_counts(game.players)}}, game}
     else
       {:error, :teams_full} -> {:reply, {:error, :teams_full}, game}
       {:error, :team_full} -> {:reply, {:error, :team_full}, game}

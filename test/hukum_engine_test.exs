@@ -25,12 +25,12 @@ defmodule HukumEngineTest do
     HukumEngine.add_player(via("GAME3"), :player3)
     HukumEngine.add_player(via("GAME3"), :player4)
 
-    assert HukumEngine.choose_team(via("GAME3"), :player1, 1) == {:ok, [1, 0]}
-    assert HukumEngine.choose_team(via("GAME3"), :player2, 1) == {:ok, [2, 0]}
+    assert HukumEngine.choose_team(via("GAME3"), :player1, 1) == {:ok, %{team_counts: [1, 0]}}
+    assert HukumEngine.choose_team(via("GAME3"), :player2, 1) == {:ok, %{team_counts: [2, 0]}}
     assert HukumEngine.choose_team(via("GAME3"), :player3, 1) == { :error, :team_full }
-    assert HukumEngine.choose_team(via("GAME3"), :player3, 2) == {:ok, [2, 1]}
+    assert HukumEngine.choose_team(via("GAME3"), :player3, 2) == {:ok, %{team_counts: [2, 1]}}
     assert HukumEngine.confirm_teams(via("GAME3")) == { :error, :teams_not_filled }
-    assert HukumEngine.choose_team(via("GAME3"), :player4, 2) == {:ok, [2, 2]}
+    assert HukumEngine.choose_team(via("GAME3"), :player4, 2) == {:ok, %{team_counts: [2, 2]}}
 
     confirmed = HukumEngine.confirm_teams(via("GAME3"))
     assert confirmed.stage == :call_or_pass
