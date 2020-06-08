@@ -142,12 +142,12 @@ defmodule HukumEngine.GameServer do
     end
   end
 
-  def handle_call({:call_trump, player_id, trump, team}, _from, game) do
+  def handle_call({:call_trump, player_id, trump}, _from, game) do
     with {:ok, rules} <- Rules.check(game.rules, {:correct_turn, player_id, game.turn}),
          {:ok, rules} <- Rules.check(rules, :call_trump)
     do
       game
-      |> Game.set_trump(trump, team)
+      |> Game.set_trump(player_id, trump)
       |> Game.deal_second_set
       |> Game.next_turn
       |> Game.next_turn

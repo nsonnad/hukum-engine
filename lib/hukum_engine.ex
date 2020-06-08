@@ -36,8 +36,8 @@ defmodule HukumEngine do
     GenServer.call(game, { :play_first_card, player_id, card })
   end
 
-  def call_trump(game, player_id, trump, team) do
-    GenServer.call(game, { :call_trump, player_id, trump, team })
+  def call_trump(game, player_id, trump) do
+    GenServer.call(game, { :call_trump, player_id, trump })
   end
 
   def play_card(game, player_id, card) do

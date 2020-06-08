@@ -114,7 +114,7 @@ defmodule HukumEngineTest do
     first_card = Enum.at(p1.hand, 0)
     g3 = HukumEngine.play_first_card(via("GAME9"), g2.turn, first_card)
     p2 = Keyword.get(g2.players, g1.turn)
-    called = HukumEngine.call_trump(via("GAME9"), g3.turn, trump_to_call, p2.team)
+    called = HukumEngine.call_trump(via("GAME9"), g3.turn, trump_to_call)
 
     assert called.suit_trump == trump_to_call
     assert length(Keyword.get(called.players, g2.turn).hand) == 7

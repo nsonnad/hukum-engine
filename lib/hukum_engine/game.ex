@@ -182,8 +182,9 @@ defmodule HukumEngine.Game do
 
   def score_card(_rank, _card_suit, _trump, _led_suit), do: 0
 
-  def set_trump(game, trump, team) do
-    %{ game | suit_trump: trump, calling_team: team }
+  def set_trump(game, player_id, trump) do
+    calling_team = Keyword.get(game.players, player_id).team
+    %{ game | suit_trump: trump, calling_team: calling_team }
   end
 
   def game_state_reply(game) do

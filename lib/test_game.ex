@@ -63,8 +63,7 @@ defmodule AutoTestGame do
     color_str(:green, "#{game.turn} calls #{trump}\n")
     :timer.sleep(:rand.uniform(:timer.seconds(@timer_wait)))
     color_str(:magenta, "First card was: #{initial_card.rank} of #{initial_card.suit}\n")
-    p = Keyword.get(game.players, game.turn)
-    {HukumEngine.call_trump(game_id, game.turn, trump, p.team), game_id}
+    {HukumEngine.call_trump(game_id, game.turn, trump), game_id}
   end
 
   def play_tricks({game = %{stage: :playing_hand, suit_led: :undecided}, game_id}) do
