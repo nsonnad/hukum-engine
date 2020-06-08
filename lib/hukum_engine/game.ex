@@ -86,10 +86,13 @@ defmodule HukumEngine.Game do
     case length(game.hand_trick_winners) == 8 do
       true ->
         winning_team = hand_winning_team(game.hand_trick_winners, game.calling_team)
-        new_score = Map.get(game.score, winning_team) + points_to_add(winning_team, game.calling_team)
+        new_winner_score = Map.get(game.score, winning_team) + points_to_add(winning_team, game.calling_team)
+        new_score = Map.put(game.score, winning_team, new_winner_score)
+
         game = %{game |
-          score: Map.put(game.score, winning_team, new_score),
-          suit_led: :undecided
+          score: new_score,
+          suit_led: :undecided,
+          dealer: assign_new_dealer(game.dealer, game.players, new_score)
         } |> start_new_hand
 
         {:ok, game}
@@ -109,6 +112,23 @@ defmodule HukumEngine.Game do
 
   def assign_random_dealer(game) do
     %{ game | dealer: random_player(game.players) }
+  end
+
+  def assign_new_dealer(old_dealer, players, score) do
+    [score1, score2] = Map.values(score)
+    case score1 == score2 do
+      true -> old_dealer
+      false -> losing_team_dealer(players, score)
+    end
+  end
+
+  def losing_team_dealer(players, score) do
+    {losing_team, _} = Enum.min_by(score, fn {team, points} -> points end)
+
+    players
+    |> Enum.filter(fn {_k, p} -> p.team == losing_team end)
+    |> Enum.random
+    |> Kernel.elem(0)
   end
 
   # helpers
@@ -172,6 +192,7 @@ defmodule HukumEngine.Game do
       stage: game.rules.stage,
       players: game.players,
       turn: game.turn,
+      dealer: game.dealer,
       score: game.score,
       current_trick: game.current_trick,
       suit_trump: game.suit_trump,

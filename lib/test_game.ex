@@ -26,7 +26,8 @@ defmodule AutoTestGame do
   end
 
   def start_hand({game, game_id}) do
-  IO.puts("starting new hand...")
+  IO.puts("starting new hand...\n")
+  IO.puts("dealer is #{game.dealer} from team #{Keyword.get(game.players, game.dealer).team}\n")
 
   { game, game_id }
   |> decide_trump(Enum.random(@call_or_pass))

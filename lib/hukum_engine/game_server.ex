@@ -75,8 +75,8 @@ defmodule HukumEngine.GameServer do
     with {:ok, rules} <- Rules.check(game.rules, {:confirm_teams, team_counts(game.players)})
     do
       game
-      |> Game.assign_random_dealer
       |> Game.sort_players
+      |> Game.assign_random_dealer
       |> Game.start_new_hand
       |> update_rules(rules)
       |> reply_game_data()
@@ -115,7 +115,7 @@ defmodule HukumEngine.GameServer do
   end
 
   ## TODO: loner
-  def handle_call({:loaner, player_id}, _from, game) do
+  def handle_call({:loner, player_id}, _from, game) do
     with {:ok, rules} <- Rules.check(game.rules, {:correct_turn, player_id, game.turn}),
          {:ok, rules} <- Rules.check(rules, :loaner)
     do
@@ -178,6 +178,10 @@ defmodule HukumEngine.GameServer do
       {:error, :illegal_card} -> {:reply, {:error, :illegal_card}, game}
       :error -> {:reply, :error, game}
     end
+  end
+
+  def handle_cast({:end_game}, game) do
+    {:stop, :normal, game}
   end
 
   defp team_counts(players) do

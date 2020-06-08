@@ -44,8 +44,8 @@ defmodule HukumEngine do
     GenServer.call(game, { :play_card, player_id, card })
   end
 
-  def stop_game(game) do
-    GenServer.call(game, { :stop_game })
+  def end_game(game) do
+    GenServer.cast(game, { :end_game })
   end
 
   #def rematch(game, players) do
