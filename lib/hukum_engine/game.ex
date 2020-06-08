@@ -1,5 +1,5 @@
 defmodule HukumEngine.Game do
-  alias HukumEngine.{Deck, Game, Player, Rules}
+  alias HukumEngine.{Deck, Game, Player}
   import Kernel
 
   @deck_size 32
@@ -33,6 +33,10 @@ defmodule HukumEngine.Game do
   # add first team
   def add_player(game, player_name) do
     %{game | players: [ create_player(player_name) | game.players ] }
+  end
+
+  def remove_player(game, player_name) do
+    %{game | players: Keyword.delete(game.players, player_name) }
   end
 
   def create_player(player_name) do

@@ -34,6 +34,10 @@ defmodule HukumEngine.Rules do
     end
   end
 
+  def check(%Rules{stage: :waiting_for_players} = rules, :remove_player) do
+    {:ok, rules}
+  end
+
   def check(%Rules{stage: :choosing_teams} = _rules, { :choose_team, _team, _team_counts = [2, 2] }) do
     {:error, :teams_full}
   end

@@ -3,11 +3,12 @@ defmodule HukumEngine.GameServer do
   # GenServer for a game. It takes incoming calls and coordinates them with
   # the `Rules` state machine, making sure corresponding updates to the `Game`
   # state happen at the appropriate times.
-  use GenServer
+  use GenServer, restart: :transient
   require Logger
 
   alias HukumEngine.{Game, Rules}
 
+  @timeout 600_000
   @registry :game_registry
 
   def start_link(game_id) do
@@ -39,6 +40,18 @@ defmodule HukumEngine.GameServer do
       |> reply_success(:ok)
     else
       {:error, :game_full} -> {:reply, {:error, :game_full}, game}
+      :error -> {:reply, :error, game}
+    end
+  end
+
+  def handle_call({:remove_player, player_name}, _from, game) do
+    with {:ok, rules} <- Rules.check(game.rules, :remove_player)
+    do
+      game
+      |> Game.remove_player(player_name)
+      |> update_rules(rules)
+      |> reply_success(:ok)
+    else
       :error -> {:reply, :error, game}
     end
   end
@@ -167,7 +180,6 @@ defmodule HukumEngine.GameServer do
     end
   end
 
-
   defp team_counts(players) do
     [1, 2]
     |> Enum.map(fn num ->
@@ -177,7 +189,7 @@ defmodule HukumEngine.GameServer do
 
   defp update_rules(game, rules), do: %{ game | rules: rules }
 
-  defp reply_success(data, reply), do: {:reply, reply, data}
+  defp reply_success(data, reply), do: {:reply, reply, data, @timeout}
 
   defp reply_game_data(game), do: {:reply, Game.game_state_reply(game), game}
 end

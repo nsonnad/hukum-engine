@@ -12,6 +12,10 @@ defmodule HukumEngine do
     GenServer.call(game, { :add_player, player_name })
   end
 
+  def remove_player(game, player_name) do
+    GenServer.call(game, { :remove_player, player_name })
+  end
+
   def choose_team(game, player_name, team) do
     GenServer.call(game, { :choose_team, player_name, team })
   end
@@ -38,6 +42,10 @@ defmodule HukumEngine do
 
   def play_card(game, player_id, card) do
     GenServer.call(game, { :play_card, player_id, card })
+  end
+
+  def stop_game(game) do
+    GenServer.call(game, { :stop_game })
   end
 
   #def rematch(game, players) do
