@@ -60,6 +60,7 @@ defmodule HukumEngine.Game do
 
     %{ game |
       players: players,
+      current_trick: [],
       hand_trick_winners: [],
       suit_led: :undecided,
       deck: elem(deck, 1),
@@ -67,9 +68,17 @@ defmodule HukumEngine.Game do
   end
 
   def play_card(game, player_id, card) do
-    current_trick = [ Map.put(card, :player, player_id) | game.current_trick ]
-    {_, players} = remove_card_from_hand(game.players, player_id, card)
-    %{game | players: players, current_trick: current_trick }
+    %{game |
+      players: remove_card_from_hand(game.players, player_id, card),
+      current_trick: update_trick(game.current_trick, player_id, card)
+    }
+  end
+
+  def update_trick(current_trick, player_id, card) do
+    case length(current_trick) < 4 do
+      true -> [ Map.put(card, :player, player_id) | current_trick ]
+      false -> [ Map.put(card, :player, player_id) ]
+    end
   end
 
   def check_trick(game) do
@@ -151,14 +160,13 @@ defmodule HukumEngine.Game do
     %{game |
       turn: hi_card.player,
       suit_led: :undecided,
-      hand_trick_winners: [ hi_team | game.hand_trick_winners ],
-      current_trick: []
+      hand_trick_winners: [ hi_team | game.hand_trick_winners ]
     }
   end
 
   def remove_card_from_hand(players, player_id, card) do
-    Keyword.get_and_update(players, player_id, fn player ->
-      { player, Map.put(player, :hand, List.delete(player.hand, card))}
+    Keyword.update!(players, player_id, fn player ->
+      Map.put(player, :hand, List.delete(player.hand, card))
     end)
   end
 

@@ -124,28 +124,28 @@ defmodule HukumEngineTest do
 
   test "getting the highest card from a trick" do
     trump_trick = [
-      {:player_t1_p1, %{rank: :seven, suit: :diamonds}},
-      {:player_t2_p1, %{rank: :ace, suit: :clubs}},
-      {:player_t1_p2, %{rank: :king, suit: :clubs}},
-      {:player_t2_p2, %{rank: :ten, suit: :hearts}},
+      %{player: "player_t1_p1", rank: :seven, suit: :diamonds},
+      %{player: "player_t2_p1", rank: :ace, suit: :clubs},
+      %{player: "player_t1_p2", rank: :king, suit: :clubs},
+      %{player: "player_t2_p2", rank: :ten, suit: :hearts},
     ]
     trump_trick2 = [
-      {:player_t1_p1, %{rank: :seven, suit: :hearts}},
-      {:player_t2_p1, %{rank: :nine, suit: :hearts}},
-      {:player_t1_p2, %{rank: :ace, suit: :spades}},
-      {:player_t2_p2, %{rank: :ten, suit: :hearts}},
+      %{player: "player_t1_p1", rank: :seven, suit: :hearts},
+      %{player: "player_t2_p1", rank: :nine, suit: :hearts},
+      %{player: "player_t1_p2", rank: :ace, suit: :spades},
+      %{player: "player_t2_p2", rank: :ten, suit: :hearts},
     ]
     suit_trick = [
-      {:player_t1_p1, %{rank: :seven, suit: :diamonds}},
-      {:player_t2_p1, %{rank: :eight, suit: :diamonds}},
-      {:player_t1_p2, %{rank: :king, suit: :diamonds}},
-      {:player_t2_p2, %{rank: :ace, suit: :diamonds}},
+      %{player: "player_t1_p1", rank: :seven, suit: :diamonds},
+      %{player: "player_t2_p1", rank: :eight, suit: :diamonds},
+      %{player: "player_t1_p2", rank: :king, suit: :diamonds},
+      %{player: "player_t2_p2", rank: :ace, suit: :diamonds},
     ]
     offsuit_trick = [
-      {:player_t1_p1, %{rank: :seven, suit: :diamonds}},
-      {:player_t2_p1, %{rank: :eight, suit: :clubs}},
-      {:player_t1_p2, %{rank: :king, suit: :diamonds}},
-      {:player_t2_p2, %{rank: :ace, suit: :diamonds}},
+      %{player: "player_t1_p1", rank: :seven, suit: :diamonds},
+      %{player: "player_t2_p1", rank: :eight, suit: :clubs},
+      %{player: "player_t1_p2", rank: :king, suit: :diamonds},
+      %{player: "player_t2_p2", rank: :ace, suit: :diamonds},
     ]
 
     assert Game.get_highest_card(trump_trick, :diamonds, :clubs) == Enum.at(trump_trick, 0)
