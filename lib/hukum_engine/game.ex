@@ -196,6 +196,7 @@ defmodule HukumEngine.Game do
       dealer: game.dealer,
       score: game.score,
       current_trick: game.current_trick,
+      hand_trick_winners: game.hand_trick_winners,
       suit_trump: game.suit_trump,
       suit_led: game.suit_led,
       calling_team: game.calling_team
