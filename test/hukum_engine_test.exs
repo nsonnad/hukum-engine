@@ -154,6 +154,50 @@ defmodule HukumEngineTest do
     assert Game.get_highest_card(offsuit_trick, :hearts, :clubs) == Enum.at(offsuit_trick, 1)
   end
 
+  test "sorting hands" do
+    game = %Game{
+      players: [
+        {:player1, %{hand:
+          [
+            %{rank: :seven, suit: :hearts},
+            %{rank: :ten, suit: :diamonds},
+            %{rank: :seven, suit: :diamonds},
+            %{rank: :ace, suit: :clubs}
+          ]}
+        },
+        {:player12, %{hand:
+          [
+            %{rank: :king, suit: :spades},
+            %{rank: :jack, suit: :spades},
+            %{rank: :queen, suit: :spades},
+            %{rank: :seven, suit: :hearts}
+          ]}
+        }
+      ]
+    }
+
+    expected_result = [
+      player1: %{
+        hand: [
+          %{rank: :ace, suit: :clubs},
+          %{rank: :seven, suit: :diamonds},
+          %{rank: :ten, suit: :diamonds},
+          %{rank: :seven, suit: :hearts}
+        ]
+      },
+      player12: %{
+        hand: [
+          %{rank: :seven, suit: :hearts},
+          %{rank: :jack, suit: :spades},
+          %{rank: :queen, suit: :spades},
+          %{rank: :king, suit: :spades}
+        ]
+      }
+    ]
+
+    assert Game.sort_hands(game).players == expected_result
+  end
+
   # helpers
   # =====================================
   def via(id), do: GameServer.via_tuple(id)

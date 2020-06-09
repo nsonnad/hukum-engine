@@ -140,6 +140,14 @@ defmodule HukumEngine.Game do
     |> Kernel.elem(0)
   end
 
+  def sort_hands(game) do
+    %{ game | players: Enum.map(game.players, fn {k, p} ->
+      {k, Map.update(p, :hand, %{}, fn hand ->
+        Enum.sort_by(hand, fn h -> {h.suit, Deck.value(h.rank)} end)
+      end)}
+    end)}
+  end
+
   # helpers
   # ===============================
   def set_suit_led(game, suit), do: %{game | suit_led: suit}

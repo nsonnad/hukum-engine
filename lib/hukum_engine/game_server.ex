@@ -78,6 +78,7 @@ defmodule HukumEngine.GameServer do
       |> Game.sort_players
       |> Game.assign_random_dealer
       |> Game.start_new_hand
+      |> Game.sort_hands
       |> update_rules(rules)
       |> reply_game_data()
     else
@@ -91,8 +92,15 @@ defmodule HukumEngine.GameServer do
          {:ok, _rules} <- Rules.check(rules, :pass)
     do
       case game.turn == game.dealer do
-        true -> game |> Game.start_new_hand |> reply_game_data()
-        false -> game |> Game.next_turn |> reply_game_data()
+        true ->
+          game
+          |> Game.start_new_hand
+          |> Game.sort_hands
+          |> reply_game_data()
+        false ->
+          game
+          |> Game.next_turn
+          |> reply_game_data()
       end
     else
       {:error, :not_your_turn} -> {:reply, {:error, :not_your_turn}, game}
@@ -134,6 +142,7 @@ defmodule HukumEngine.GameServer do
       game
       |> Game.set_trump(player_id, trump)
       |> Game.deal_second_set
+      |> Game.sort_hands
       |> Game.next_turn
       |> Game.next_turn
       |> update_rules(rules)
