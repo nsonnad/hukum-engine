@@ -41,7 +41,7 @@ defmodule HukumEngineTest do
     assert HukumEngine.confirm_teams(via("GAME4")) == { :error, :teams_not_filled }
     assert HukumEngine.choose_team(via("GAME4"), :player4, 2) == {:ok, %{team_counts: [2, 2]}}
 
-    confirmed = HukumEngine.confirm_teams(via("GAME4"))
+    {:ok, confirmed} = HukumEngine.confirm_teams(via("GAME4"))
     assert confirmed.stage == :call_or_pass
   end
 
@@ -68,24 +68,24 @@ defmodule HukumEngineTest do
 
   test "once teams are confirmed, players are sorted in the right order" do
     init_game("GAME5")
-    game = HukumEngine.get_game_state(via("GAME5"))
+    {:ok, game} = HukumEngine.get_game_state(via("GAME5"))
     assert Keyword.keys(game.players) == [:player1, :player3, :player2, :player4]
   end
 
   test "passing advances the turn to the next player" do
     init_game("GAME6")
-    game = HukumEngine.get_game_state(via("GAME6"))
-    new_game = HukumEngine.call_or_pass(via("GAME6"), game.turn, :pass)
+    {:ok, game} = HukumEngine.get_game_state(via("GAME6"))
+    {:ok, new_game} = HukumEngine.call_or_pass(via("GAME6"), game.turn, :pass)
     assert new_game.turn == Game.next_player(game.players, game.turn)
   end
 
   test "four passes deals a new hand and restarts the call or pass process" do
     init_game("GAME7")
-    g1 = HukumEngine.get_game_state(via("GAME7"))
-    g2 = HukumEngine.call_or_pass(via("GAME7"), g1.turn, :pass)
-    g3 = HukumEngine.call_or_pass(via("GAME7"), g2.turn, :pass)
-    g4 = HukumEngine.call_or_pass(via("GAME7"), g3.turn, :pass)
-    g5 = HukumEngine.call_or_pass(via("GAME7"), g4.turn, :pass)
+    {:ok, g1} = HukumEngine.get_game_state(via("GAME7"))
+    {:ok, g2} = HukumEngine.call_or_pass(via("GAME7"), g1.turn, :pass)
+    {:ok, g3} = HukumEngine.call_or_pass(via("GAME7"), g2.turn, :pass)
+    {:ok, g4} = HukumEngine.call_or_pass(via("GAME7"), g3.turn, :pass)
+    {:ok, g5} = HukumEngine.call_or_pass(via("GAME7"), g4.turn, :pass)
     p1_g1_hand = Keyword.get(g1.players, :player1).hand
     p1_g4_hand = Keyword.get(g4.players, :player1).hand
     p1_g5_hand = Keyword.get(g5.players, :player1).hand
@@ -98,7 +98,7 @@ defmodule HukumEngineTest do
 
   test "playing out of turn returns an error" do
     init_game("GAME8")
-    g0 = HukumEngine.get_game_state(via("GAME8"))
+    {:ok, g0} = HukumEngine.get_game_state(via("GAME8"))
     assert HukumEngine.call_or_pass(via("GAME8"), Game.next_player(g0.players, g0.turn), :pass) == {:error, :not_your_turn}
     assert HukumEngine.call_or_pass(via("GAME8"), Game.next_player(g0.players, g0.turn), :calling) == {:error, :not_your_turn}
   end
@@ -106,15 +106,15 @@ defmodule HukumEngineTest do
   test "announcing calling, playing first card, setting trump, dealing remaining cards" do
     init_game("GAME9")
     trump_to_call = :hearts
-    g0 = HukumEngine.get_game_state(via("GAME9"))
+    {:ok, g0} = HukumEngine.get_game_state(via("GAME9"))
 
-    g1 = HukumEngine.call_or_pass(via("GAME9"), g0.turn, :pass)
-    g2 = HukumEngine.call_or_pass(via("GAME9"), g1.turn, :calling)
+    {:ok, g1} = HukumEngine.call_or_pass(via("GAME9"), g0.turn, :pass)
+    {:ok, g2} = HukumEngine.call_or_pass(via("GAME9"), g1.turn, :calling)
     p1 = Keyword.get(g1.players, g2.turn)
     first_card = Enum.at(p1.hand, 0)
-    g3 = HukumEngine.play_first_card(via("GAME9"), g2.turn, first_card)
+    {:ok, g3} = HukumEngine.play_first_card(via("GAME9"), g2.turn, first_card)
     p2 = Keyword.get(g2.players, g1.turn)
-    called = HukumEngine.call_trump(via("GAME9"), g3.turn, trump_to_call)
+    {:ok, called} = HukumEngine.call_trump(via("GAME9"), g3.turn, trump_to_call)
 
     assert called.suit_trump == trump_to_call
     assert length(Keyword.get(called.players, g2.turn).hand) == 7

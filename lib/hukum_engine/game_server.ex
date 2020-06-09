@@ -195,5 +195,5 @@ defmodule HukumEngine.GameServer do
 
   defp reply_success(data, reply), do: {:reply, reply, data, @timeout}
 
-  defp reply_game_data(game), do: {:reply, Game.game_state_reply(game), game}
+  defp reply_game_data(game), do: {:reply, {:ok, Game.game_state_reply(game) }, game}
 end
