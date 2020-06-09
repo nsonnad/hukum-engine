@@ -160,7 +160,7 @@ defmodule HukumEngineTest do
         {:player1, %{hand:
           [
             %{rank: :seven, suit: :hearts},
-            %{rank: :ten, suit: :diamonds},
+            %{rank: :ten, suit: :spades},
             %{rank: :seven, suit: :diamonds},
             %{rank: :ace, suit: :clubs}
           ]}
@@ -181,16 +181,16 @@ defmodule HukumEngineTest do
         hand: [
           %{rank: :ace, suit: :clubs},
           %{rank: :seven, suit: :diamonds},
-          %{rank: :ten, suit: :diamonds},
+          %{rank: :ten, suit: :spades},
           %{rank: :seven, suit: :hearts}
         ]
       },
       player12: %{
         hand: [
-          %{rank: :seven, suit: :hearts},
           %{rank: :jack, suit: :spades},
           %{rank: :queen, suit: :spades},
-          %{rank: :king, suit: :spades}
+          %{rank: :king, suit: :spades},
+          %{rank: :seven, suit: :hearts}
         ]
       }
     ]

@@ -15,4 +15,9 @@ defmodule HukumEngine.Deck do
   def value(:queen), do: 12
   def value(:king), do: 13
   def value(:ace), do: 14
+
+  def suit_value(:clubs), do: 1
+  def suit_value(:diamonds), do: 2
+  def suit_value(:spades), do: 3
+  def suit_value(:hearts), do: 4
 end

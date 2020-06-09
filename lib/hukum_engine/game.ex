@@ -143,7 +143,7 @@ defmodule HukumEngine.Game do
   def sort_hands(game) do
     %{ game | players: Enum.map(game.players, fn {k, p} ->
       {k, Map.update(p, :hand, %{}, fn hand ->
-        Enum.sort_by(hand, fn h -> {h.suit, Deck.value(h.rank)} end)
+        Enum.sort_by(hand, fn h -> {Deck.suit_value(h.suit), Deck.value(h.rank)} end)
       end)}
     end)}
   end
