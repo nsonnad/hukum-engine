@@ -112,14 +112,14 @@ defmodule HukumEngineTest do
     {:ok, g2} = HukumEngine.call_or_pass(via("GAME9"), g1.turn, :calling)
     p1 = Keyword.get(g1.players, g2.turn)
     first_card = Enum.at(p1.hand, 0)
-    {:ok, g3} = HukumEngine.play_first_card(via("GAME9"), g2.turn, first_card)
+    {:ok, g3} = HukumEngine.play_card(via("GAME9"), g2.turn, first_card)
     p2 = Keyword.get(g2.players, g1.turn)
     {:ok, called} = HukumEngine.call_trump(via("GAME9"), g3.turn, trump_to_call)
 
     assert called.suit_trump == trump_to_call
     assert length(Keyword.get(called.players, g2.turn).hand) == 7
     assert length(Keyword.get(called.players, g3.turn).hand) == 8
-    assert Enum.member?(called.current_trick, {g2.turn, first_card})
+    assert Enum.member?(called.current_trick, Map.put(first_card, :player, g2.turn))
   end
 
   test "getting the highest card from a trick" do

@@ -54,14 +54,14 @@ defmodule AutoTestGame do
     :timer.sleep(:rand.uniform(:timer.seconds(@timer_wait)))
     color_str(:blue, "#{game.turn} playing first card...\n")
     p = Keyword.get(game.players, game.turn)
-    {:ok, new_game} = HukumEngine.play_first_card(game_id, game.turn, Enum.random(p.hand))
+    {:ok, new_game} = HukumEngine.play_card(game_id, game.turn, Enum.random(p.hand))
     {new_game, game_id}
   end
 
   def call_trump({game, game_id}) do
     :timer.sleep(:rand.uniform(:timer.seconds(@timer_wait)))
     trump = Enum.random(@suits)
-    {_, initial_card} = Enum.at(game.current_trick, 0)
+    initial_card = Enum.at(game.current_trick, 0)
     color_str(:green, "#{game.turn} calls #{trump}\n")
     :timer.sleep(:rand.uniform(:timer.seconds(@timer_wait)))
     color_str(:magenta, "First card was: #{initial_card.rank} of #{initial_card.suit}\n")

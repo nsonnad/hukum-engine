@@ -126,22 +126,7 @@ defmodule HukumEngine.GameServer do
     end
   end
 
-  def handle_call({:play_first_card, player_id, card}, _from, game) do
-    with {:ok, rules} <- Rules.check(game.rules, {:correct_turn, player_id, game.turn}),
-         {:ok, rules} <- Rules.check(rules, :play_first_card)
-    do
-      game
-      |> Game.play_card(player_id, card)
-      |> Game.set_suit_led(card.suit)
-      |> Game.prev_turn
-      |> update_rules(rules)
-      |> reply_game_data()
-    else
-      {:error, :not_your_turn} -> {:reply, {:error, :not_your_turn}, game}
-      :error -> {:reply, :error, game}
-    end
-  end
-
+  # after first card is played, caller announces trump
   def handle_call({:call_trump, player_id, trump}, _from, game) do
     with {:ok, rules} <- Rules.check(game.rules, {:correct_turn, player_id, game.turn}),
          {:ok, rules} <- Rules.check(rules, :call_trump)
@@ -159,6 +144,29 @@ defmodule HukumEngine.GameServer do
     end
   end
 
+  # the first card has different rules than other cards:
+  # it sends the turn back to the caller, who then calls
+  def handle_call(
+    {:play_card, player_id, card},
+    _from,
+    game = %Game{rules: %Rules{stage: :waiting_for_first_card}})
+  do
+    with {:ok, rules} <- Rules.check(game.rules, {:correct_turn, player_id, game.turn}),
+         {:ok, rules} <- Rules.check(rules, :play_card)
+    do
+      game
+      |> Game.play_card(player_id, card)
+      |> Game.set_suit_led(card.suit)
+      |> Game.prev_turn
+      |> update_rules(rules)
+      |> reply_game_data()
+    else
+      {:error, :not_your_turn} -> {:reply, {:error, :not_your_turn}, game}
+      :error -> {:reply, :error, game}
+    end
+  end
+
+  # all cards but the first are handled the same way
   def handle_call({:play_card, player_id, card}, _from, game) do
     player_hand = Keyword.get(game.players, player_id).hand
     with {:ok, rules} <- Rules.check(game.rules, {:correct_turn, player_id, game.turn}),

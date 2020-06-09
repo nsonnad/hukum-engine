@@ -9,9 +9,9 @@ defmodule HukumEngine.Game do
     players: [],
     score: %{ 1 => 0, 2 => 0},
     rules: :none,
-    dealer: nil,
+    dealer: "",
     deck: nil,
-    turn: nil,
+    turn: "",
     calling_team: nil,
     current_trick: [],
     hand_trick_winners: [],
@@ -67,7 +67,7 @@ defmodule HukumEngine.Game do
   end
 
   def play_card(game, player_id, card) do
-    current_trick = [ {player_id, card} | game.current_trick ]
+    current_trick = [ Map.put(card, :player, player_id) | game.current_trick ]
     {_, players} = remove_card_from_hand(game.players, player_id, card)
     %{game | players: players, current_trick: current_trick }
   end
@@ -76,7 +76,7 @@ defmodule HukumEngine.Game do
     case length(game.current_trick) do
       4 -> {:ok, game |> finish_trick}
       1 ->
-        {_, card_led} = Enum.at(game.current_trick, 0)
+        card_led = Enum.at(game.current_trick, 0)
         {:ok, set_suit_led(game, card_led.suit) |> next_turn}
       _ -> {:ok, game |> next_turn}
     end
@@ -123,7 +123,7 @@ defmodule HukumEngine.Game do
   end
 
   def losing_team_dealer(players, score) do
-    {losing_team, _} = Enum.min_by(score, fn {team, points} -> points end)
+    {losing_team, _} = Enum.min_by(score, fn {_team, points} -> points end)
 
     players
     |> Enum.filter(fn {_k, p} -> p.team == losing_team end)
@@ -146,10 +146,10 @@ defmodule HukumEngine.Game do
   end
 
   def finish_trick(game) do
-    {hi_player, _hi_card} = get_highest_card(game.current_trick, game.suit_trump, game.suit_led)
-    hi_team = get_player_team(game.players, hi_player)
+    hi_card = get_highest_card(game.current_trick, game.suit_trump, game.suit_led)
+    hi_team = get_player_team(game.players, hi_card.player)
     %{game |
-      turn: hi_player,
+      turn: hi_card.player,
       suit_led: :undecided,
       hand_trick_winners: [ hi_team | game.hand_trick_winners ],
       current_trick: []
@@ -163,7 +163,7 @@ defmodule HukumEngine.Game do
   end
 
   def get_highest_card(trick, trump, suit_led) do
-    Enum.max_by(trick, fn {_player, card} ->
+    Enum.max_by(trick, fn card ->
       score_card(card.rank, card.suit, trump, suit_led)
     end)
   end
