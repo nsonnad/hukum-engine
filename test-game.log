@@ -1,0 +1,1688 @@
+Compiling 1 file (.ex)
+starting new hand...
+
+dealer is george from team 1
+
+ringo decides to call...
+
+john playing first card...
+
+ringo calls hearts
+
+First card was: jack of hearts
+
+paul plays: ace of hearts
+
+george plays: nine of hearts
+
+ringo plays: jack of diamonds
+
+[
+  %{player: :ringo, rank: :jack, suit: :diamonds},
+  %{player: :george, rank: :nine, suit: :hearts},
+  %{player: :paul, rank: :ace, suit: :hearts},
+  %{player: :john, rank: :jack, suit: :hearts}
+]
+paul leads: queen of hearts
+
+george plays: seven of hearts
+
+ringo plays: ace of diamonds
+
+john plays: king of hearts
+
+[
+  %{player: :john, rank: :king, suit: :hearts},
+  %{player: :ringo, rank: :ace, suit: :diamonds},
+  %{player: :george, rank: :seven, suit: :hearts},
+  %{player: :paul, rank: :queen, suit: :hearts}
+]
+john leads: ten of hearts
+
+paul plays: eight of hearts
+
+george plays: nine of clubs
+
+ringo plays: nine of diamonds
+
+[
+  %{player: :ringo, rank: :nine, suit: :diamonds},
+  %{player: :george, rank: :nine, suit: :clubs},
+  %{player: :paul, rank: :eight, suit: :hearts},
+  %{player: :john, rank: :ten, suit: :hearts}
+]
+john leads: king of spades
+
+paul plays: queen of spades
+
+george plays: nine of spades
+
+ringo plays: ace of spades
+
+[
+  %{player: :ringo, rank: :ace, suit: :spades},
+  %{player: :george, rank: :nine, suit: :spades},
+  %{player: :paul, rank: :queen, suit: :spades},
+  %{player: :john, rank: :king, suit: :spades}
+]
+ringo leads: queen of diamonds
+
+john plays: seven of diamonds
+
+paul plays: king of diamonds
+
+george plays: ten of diamonds
+
+[
+  %{player: :george, rank: :ten, suit: :diamonds},
+  %{player: :paul, rank: :king, suit: :diamonds},
+  %{player: :john, rank: :seven, suit: :diamonds},
+  %{player: :ringo, rank: :queen, suit: :diamonds}
+]
+paul leads: king of clubs
+
+george plays: jack of clubs
+
+ringo plays: queen of clubs
+
+john plays: ace of clubs
+
+[
+  %{player: :john, rank: :ace, suit: :clubs},
+  %{player: :ringo, rank: :queen, suit: :clubs},
+  %{player: :george, rank: :jack, suit: :clubs},
+  %{player: :paul, rank: :king, suit: :clubs}
+]
+john leads: ten of spades
+
+paul plays: eight of clubs
+
+george plays: ten of clubs
+
+ringo plays: jack of spades
+
+[
+  %{player: :ringo, rank: :jack, suit: :spades},
+  %{player: :george, rank: :ten, suit: :clubs},
+  %{player: :paul, rank: :eight, suit: :clubs},
+  %{player: :john, rank: :ten, suit: :spades}
+]
+ringo leads: seven of spades
+
+john plays: eight of spades
+
+paul plays: eight of diamonds
+
+george plays: seven of clubs
+
+Hand over. New score:
+%{1 => 2, 2 => 0}
+
+
+starting new hand...
+
+dealer is ringo from team 2
+
+john decides to call...
+
+paul playing first card...
+
+john calls spades
+
+First card was: ace of hearts
+
+george plays: jack of hearts
+
+ringo plays: seven of hearts
+
+john plays: queen of hearts
+
+[
+  %{player: :john, rank: :queen, suit: :hearts},
+  %{player: :ringo, rank: :seven, suit: :hearts},
+  %{player: :george, rank: :jack, suit: :hearts},
+  %{player: :paul, rank: :ace, suit: :hearts}
+]
+paul leads: ace of spades
+
+george plays: king of spades
+
+ringo plays: jack of spades
+
+john plays: nine of clubs
+
+[
+  %{player: :john, rank: :nine, suit: :clubs},
+  %{player: :ringo, rank: :jack, suit: :spades},
+  %{player: :george, rank: :king, suit: :spades},
+  %{player: :paul, rank: :ace, suit: :spades}
+]
+paul leads: ten of spades
+
+george plays: queen of spades
+
+ringo plays: jack of clubs
+
+john plays: king of clubs
+
+[
+  %{player: :john, rank: :king, suit: :clubs},
+  %{player: :ringo, rank: :jack, suit: :clubs},
+  %{player: :george, rank: :queen, suit: :spades},
+  %{player: :paul, rank: :ten, suit: :spades}
+]
+george leads: nine of spades
+
+ringo plays: seven of diamonds
+
+john plays: queen of clubs
+
+paul plays: seven of spades
+
+[
+  %{player: :paul, rank: :seven, suit: :spades},
+  %{player: :john, rank: :queen, suit: :clubs},
+  %{player: :ringo, rank: :seven, suit: :diamonds},
+  %{player: :george, rank: :nine, suit: :spades}
+]
+george leads: eight of spades
+
+ringo plays: eight of diamonds
+
+john plays: ace of diamonds
+
+paul plays: king of diamonds
+
+[
+  %{player: :paul, rank: :king, suit: :diamonds},
+  %{player: :john, rank: :ace, suit: :diamonds},
+  %{player: :ringo, rank: :eight, suit: :diamonds},
+  %{player: :george, rank: :eight, suit: :spades}
+]
+george leads: nine of hearts
+
+ringo plays: ace of clubs
+
+john plays: queen of diamonds
+
+paul plays: king of hearts
+
+[
+  %{player: :paul, rank: :king, suit: :hearts},
+  %{player: :john, rank: :queen, suit: :diamonds},
+  %{player: :ringo, rank: :ace, suit: :clubs},
+  %{player: :george, rank: :nine, suit: :hearts}
+]
+paul leads: ten of diamonds
+
+george plays: seven of clubs
+
+ringo plays: nine of diamonds
+
+john plays: jack of diamonds
+
+[
+  %{player: :john, rank: :jack, suit: :diamonds},
+  %{player: :ringo, rank: :nine, suit: :diamonds},
+  %{player: :george, rank: :seven, suit: :clubs},
+  %{player: :paul, rank: :ten, suit: :diamonds}
+]
+john leads: ten of clubs
+
+paul plays: ten of hearts
+
+george plays: eight of hearts
+
+ringo plays: eight of clubs
+
+Hand over. New score:
+%{1 => 3, 2 => 0}
+
+
+starting new hand...
+
+dealer is ringo from team 2
+
+john decides to call...
+
+paul playing first card...
+
+john calls clubs
+
+First card was: ten of clubs
+
+george plays: ace of clubs
+
+ringo plays: nine of clubs
+
+john plays: king of clubs
+
+[
+  %{player: :john, rank: :king, suit: :clubs},
+  %{player: :ringo, rank: :nine, suit: :clubs},
+  %{player: :george, rank: :ace, suit: :clubs},
+  %{player: :paul, rank: :ten, suit: :clubs}
+]
+george leads: jack of clubs
+
+ringo plays: seven of clubs
+
+john plays: queen of clubs
+
+paul plays: eight of clubs
+
+[
+  %{player: :paul, rank: :eight, suit: :clubs},
+  %{player: :john, rank: :queen, suit: :clubs},
+  %{player: :ringo, rank: :seven, suit: :clubs},
+  %{player: :george, rank: :jack, suit: :clubs}
+]
+john leads: ten of spades
+
+paul plays: ace of spades
+
+george plays: king of spades
+
+ringo plays: queen of spades
+
+[
+  %{player: :ringo, rank: :queen, suit: :spades},
+  %{player: :george, rank: :king, suit: :spades},
+  %{player: :paul, rank: :ace, suit: :spades},
+  %{player: :john, rank: :ten, suit: :spades}
+]
+paul leads: king of diamonds
+
+george plays: ace of diamonds
+
+ringo plays: jack of diamonds
+
+john plays: nine of diamonds
+
+[
+  %{player: :john, rank: :nine, suit: :diamonds},
+  %{player: :ringo, rank: :jack, suit: :diamonds},
+  %{player: :george, rank: :ace, suit: :diamonds},
+  %{player: :paul, rank: :king, suit: :diamonds}
+]
+george leads: king of hearts
+
+ringo plays: jack of hearts
+
+john plays: queen of hearts
+
+paul plays: ace of hearts
+
+[
+  %{player: :paul, rank: :ace, suit: :hearts},
+  %{player: :john, rank: :queen, suit: :hearts},
+  %{player: :ringo, rank: :jack, suit: :hearts},
+  %{player: :george, rank: :king, suit: :hearts}
+]
+paul leads: nine of hearts
+
+george plays: eight of hearts
+
+ringo plays: ten of hearts
+
+john plays: nine of spades
+
+[
+  %{player: :john, rank: :nine, suit: :spades},
+  %{player: :ringo, rank: :ten, suit: :hearts},
+  %{player: :george, rank: :eight, suit: :hearts},
+  %{player: :paul, rank: :nine, suit: :hearts}
+]
+ringo leads: ten of diamonds
+
+john plays: eight of spades
+
+paul plays: eight of diamonds
+
+george plays: queen of diamonds
+
+[
+  %{player: :george, rank: :queen, suit: :diamonds},
+  %{player: :paul, rank: :eight, suit: :diamonds},
+  %{player: :john, rank: :eight, suit: :spades},
+  %{player: :ringo, rank: :ten, suit: :diamonds}
+]
+george leads: seven of diamonds
+
+ringo plays: jack of spades
+
+john plays: seven of spades
+
+paul plays: seven of hearts
+
+Hand over. New score:
+%{1 => 4, 2 => 0}
+
+
+starting new hand...
+
+dealer is paul from team 2
+
+george decides to call...
+
+ringo playing first card...
+
+george calls spades
+
+First card was: ten of clubs
+
+john plays: nine of clubs
+
+paul plays: queen of clubs
+
+george plays: eight of clubs
+
+[
+  %{player: :george, rank: :eight, suit: :clubs},
+  %{player: :paul, rank: :queen, suit: :clubs},
+  %{player: :john, rank: :nine, suit: :clubs},
+  %{player: :ringo, rank: :ten, suit: :clubs}
+]
+paul leads: king of spades
+
+george plays: ace of spades
+
+ringo plays: queen of spades
+
+john plays: ten of spades
+
+[
+  %{player: :john, rank: :ten, suit: :spades},
+  %{player: :ringo, rank: :queen, suit: :spades},
+  %{player: :george, rank: :ace, suit: :spades},
+  %{player: :paul, rank: :king, suit: :spades}
+]
+george leads: seven of spades
+
+ringo plays: nine of spades
+
+john plays: eight of spades
+
+paul plays: jack of spades
+
+[
+  %{player: :paul, rank: :jack, suit: :spades},
+  %{player: :john, rank: :eight, suit: :spades},
+  %{player: :ringo, rank: :nine, suit: :spades},
+  %{player: :george, rank: :seven, suit: :spades}
+]
+paul leads: nine of diamonds
+
+george plays: king of diamonds
+
+ringo plays: ten of diamonds
+
+john plays: ace of diamonds
+
+[
+  %{player: :john, rank: :ace, suit: :diamonds},
+  %{player: :ringo, rank: :ten, suit: :diamonds},
+  %{player: :george, rank: :king, suit: :diamonds},
+  %{player: :paul, rank: :nine, suit: :diamonds}
+]
+john leads: jack of diamonds
+
+paul plays: eight of hearts
+
+george plays: eight of diamonds
+
+ringo plays: ace of clubs
+
+[
+  %{player: :ringo, rank: :ace, suit: :clubs},
+  %{player: :george, rank: :eight, suit: :diamonds},
+  %{player: :paul, rank: :eight, suit: :hearts},
+  %{player: :john, rank: :jack, suit: :diamonds}
+]
+john leads: queen of diamonds
+
+paul plays: seven of clubs
+
+george plays: seven of diamonds
+
+ringo plays: jack of clubs
+
+[
+  %{player: :ringo, rank: :jack, suit: :clubs},
+  %{player: :george, rank: :seven, suit: :diamonds},
+  %{player: :paul, rank: :seven, suit: :clubs},
+  %{player: :john, rank: :queen, suit: :diamonds}
+]
+john leads: jack of hearts
+
+paul plays: nine of hearts
+
+george plays: king of hearts
+
+ringo plays: ace of hearts
+
+[
+  %{player: :ringo, rank: :ace, suit: :hearts},
+  %{player: :george, rank: :king, suit: :hearts},
+  %{player: :paul, rank: :nine, suit: :hearts},
+  %{player: :john, rank: :jack, suit: :hearts}
+]
+ringo leads: king of clubs
+
+john plays: ten of hearts
+
+paul plays: seven of hearts
+
+george plays: queen of hearts
+
+Hand over. New score:
+%{1 => 4, 2 => 2}
+
+
+starting new hand...
+
+dealer is ringo from team 2
+
+john decides to call...
+
+paul playing first card...
+
+john calls spades
+
+First card was: ace of clubs
+
+george plays: ten of clubs
+
+ringo plays: jack of clubs
+
+john plays: queen of clubs
+
+[
+  %{player: :john, rank: :queen, suit: :clubs},
+  %{player: :ringo, rank: :jack, suit: :clubs},
+  %{player: :george, rank: :ten, suit: :clubs},
+  %{player: :paul, rank: :ace, suit: :clubs}
+]
+paul leads: ace of spades
+
+george plays: king of spades
+
+ringo plays: nine of spades
+
+john plays: jack of spades
+
+[
+  %{player: :john, rank: :jack, suit: :spades},
+  %{player: :ringo, rank: :nine, suit: :spades},
+  %{player: :george, rank: :king, suit: :spades},
+  %{player: :paul, rank: :ace, suit: :spades}
+]
+paul leads: queen of spades
+
+george plays: eight of spades
+
+ringo plays: ten of diamonds
+
+john plays: ten of spades
+
+[
+  %{player: :john, rank: :ten, suit: :spades},
+  %{player: :ringo, rank: :ten, suit: :diamonds},
+  %{player: :george, rank: :eight, suit: :spades},
+  %{player: :paul, rank: :queen, suit: :spades}
+]
+paul leads: ten of hearts
+
+george plays: ace of hearts
+
+ringo plays: queen of hearts
+
+john plays: king of hearts
+
+[
+  %{player: :john, rank: :king, suit: :hearts},
+  %{player: :ringo, rank: :queen, suit: :hearts},
+  %{player: :george, rank: :ace, suit: :hearts},
+  %{player: :paul, rank: :ten, suit: :hearts}
+]
+george leads: seven of spades
+
+ringo plays: nine of clubs
+
+john plays: queen of diamonds
+
+paul plays: king of diamonds
+
+[
+  %{player: :paul, rank: :king, suit: :diamonds},
+  %{player: :john, rank: :queen, suit: :diamonds},
+  %{player: :ringo, rank: :nine, suit: :clubs},
+  %{player: :george, rank: :seven, suit: :spades}
+]
+george leads: seven of hearts
+
+ringo plays: eight of clubs
+
+john plays: seven of clubs
+
+paul plays: nine of hearts
+
+[
+  %{player: :paul, rank: :nine, suit: :hearts},
+  %{player: :john, rank: :seven, suit: :clubs},
+  %{player: :ringo, rank: :eight, suit: :clubs},
+  %{player: :george, rank: :seven, suit: :hearts}
+]
+paul leads: eight of hearts
+
+george plays: jack of hearts
+
+ringo plays: eight of diamonds
+
+john plays: nine of diamonds
+
+[
+  %{player: :john, rank: :nine, suit: :diamonds},
+  %{player: :ringo, rank: :eight, suit: :diamonds},
+  %{player: :george, rank: :jack, suit: :hearts},
+  %{player: :paul, rank: :eight, suit: :hearts}
+]
+george leads: seven of diamonds
+
+ringo plays: jack of diamonds
+
+john plays: ace of diamonds
+
+paul plays: king of clubs
+
+Hand over. New score:
+%{1 => 4, 2 => 4}
+
+
+starting new hand...
+
+dealer is ringo from team 2
+
+john decides to call...
+
+paul playing first card...
+
+john calls clubs
+
+First card was: ten of hearts
+
+george plays: ace of hearts
+
+ringo plays: jack of hearts
+
+john plays: king of clubs
+
+[
+  %{player: :john, rank: :king, suit: :clubs},
+  %{player: :ringo, rank: :jack, suit: :hearts},
+  %{player: :george, rank: :ace, suit: :hearts},
+  %{player: :paul, rank: :ten, suit: :hearts}
+]
+john leads: ten of clubs
+
+paul plays: ace of clubs
+
+george plays: queen of clubs
+
+ringo plays: jack of clubs
+
+[
+  %{player: :ringo, rank: :jack, suit: :clubs},
+  %{player: :george, rank: :queen, suit: :clubs},
+  %{player: :paul, rank: :ace, suit: :clubs},
+  %{player: :john, rank: :ten, suit: :clubs}
+]
+paul leads: eight of clubs
+
+george plays: seven of clubs
+
+ringo plays: queen of spades
+
+john plays: nine of clubs
+
+[
+  %{player: :john, rank: :nine, suit: :clubs},
+  %{player: :ringo, rank: :queen, suit: :spades},
+  %{player: :george, rank: :seven, suit: :clubs},
+  %{player: :paul, rank: :eight, suit: :clubs}
+]
+john leads: nine of spades
+
+paul plays: ace of spades
+
+george plays: ten of spades
+
+ringo plays: king of spades
+
+[
+  %{player: :ringo, rank: :king, suit: :spades},
+  %{player: :george, rank: :ten, suit: :spades},
+  %{player: :paul, rank: :ace, suit: :spades},
+  %{player: :john, rank: :nine, suit: :spades}
+]
+paul leads: nine of hearts
+
+george plays: queen of hearts
+
+ringo plays: seven of diamonds
+
+john plays: eight of spades
+
+[
+  %{player: :john, rank: :eight, suit: :spades},
+  %{player: :ringo, rank: :seven, suit: :diamonds},
+  %{player: :george, rank: :queen, suit: :hearts},
+  %{player: :paul, rank: :nine, suit: :hearts}
+]
+george leads: eight of hearts
+
+ringo plays: ten of diamonds
+
+john plays: jack of diamonds
+
+paul plays: king of hearts
+
+[
+  %{player: :paul, rank: :king, suit: :hearts},
+  %{player: :john, rank: :jack, suit: :diamonds},
+  %{player: :ringo, rank: :ten, suit: :diamonds},
+  %{player: :george, rank: :eight, suit: :hearts}
+]
+paul leads: seven of spades
+
+george plays: ace of diamonds
+
+ringo plays: nine of diamonds
+
+john plays: jack of spades
+
+[
+  %{player: :john, rank: :jack, suit: :spades},
+  %{player: :ringo, rank: :nine, suit: :diamonds},
+  %{player: :george, rank: :ace, suit: :diamonds},
+  %{player: :paul, rank: :seven, suit: :spades}
+]
+john leads: king of diamonds
+
+paul plays: eight of diamonds
+
+george plays: seven of hearts
+
+ringo plays: queen of diamonds
+
+Hand over. New score:
+%{1 => 5, 2 => 4}
+
+
+starting new hand...
+
+dealer is ringo from team 2
+
+john decides to call...
+
+paul playing first card...
+
+john calls hearts
+
+First card was: ace of spades
+
+george plays: jack of spades
+
+ringo plays: king of spades
+
+john plays: seven of hearts
+
+[
+  %{player: :john, rank: :seven, suit: :hearts},
+  %{player: :ringo, rank: :king, suit: :spades},
+  %{player: :george, rank: :jack, suit: :spades},
+  %{player: :paul, rank: :ace, suit: :spades}
+]
+john leads: ace of clubs
+
+paul plays: king of hearts
+
+george plays: king of clubs
+
+ringo plays: jack of clubs
+
+[
+  %{player: :ringo, rank: :jack, suit: :clubs},
+  %{player: :george, rank: :king, suit: :clubs},
+  %{player: :paul, rank: :king, suit: :hearts},
+  %{player: :john, rank: :ace, suit: :clubs}
+]
+paul leads: queen of hearts
+
+george plays: ten of hearts
+
+ringo plays: ace of hearts
+
+john plays: queen of clubs
+
+[
+  %{player: :john, rank: :queen, suit: :clubs},
+  %{player: :ringo, rank: :ace, suit: :hearts},
+  %{player: :george, rank: :ten, suit: :hearts},
+  %{player: :paul, rank: :queen, suit: :hearts}
+]
+ringo leads: eight of hearts
+
+john plays: ace of diamonds
+
+paul plays: jack of hearts
+
+george plays: nine of hearts
+
+[
+  %{player: :george, rank: :nine, suit: :hearts},
+  %{player: :paul, rank: :jack, suit: :hearts},
+  %{player: :john, rank: :ace, suit: :diamonds},
+  %{player: :ringo, rank: :eight, suit: :hearts}
+]
+paul leads: nine of diamonds
+
+george plays: king of diamonds
+
+ringo plays: jack of diamonds
+
+john plays: queen of diamonds
+
+[
+  %{player: :john, rank: :queen, suit: :diamonds},
+  %{player: :ringo, rank: :jack, suit: :diamonds},
+  %{player: :george, rank: :king, suit: :diamonds},
+  %{player: :paul, rank: :nine, suit: :diamonds}
+]
+george leads: seven of spades
+
+ringo plays: nine of spades
+
+john plays: nine of clubs
+
+paul plays: queen of spades
+
+[
+  %{player: :paul, rank: :queen, suit: :spades},
+  %{player: :john, rank: :nine, suit: :clubs},
+  %{player: :ringo, rank: :nine, suit: :spades},
+  %{player: :george, rank: :seven, suit: :spades}
+]
+paul leads: eight of spades
+
+george plays: ten of spades
+
+ringo plays: seven of diamonds
+
+john plays: seven of clubs
+
+[
+  %{player: :john, rank: :seven, suit: :clubs},
+  %{player: :ringo, rank: :seven, suit: :diamonds},
+  %{player: :george, rank: :ten, suit: :spades},
+  %{player: :paul, rank: :eight, suit: :spades}
+]
+george leads: ten of clubs
+
+ringo plays: eight of diamonds
+
+john plays: eight of clubs
+
+paul plays: ten of diamonds
+
+Hand over. New score:
+%{1 => 5, 2 => 6}
+
+
+starting new hand...
+
+dealer is john from team 1
+
+paul decides to call...
+
+george playing first card...
+
+paul calls spades
+
+First card was: eight of hearts
+
+ringo plays: nine of hearts
+
+john plays: ace of hearts
+
+paul plays: queen of hearts
+
+[
+  %{player: :paul, rank: :queen, suit: :hearts},
+  %{player: :john, rank: :ace, suit: :hearts},
+  %{player: :ringo, rank: :nine, suit: :hearts},
+  %{player: :george, rank: :eight, suit: :hearts}
+]
+john leads: ten of spades
+
+paul plays: queen of spades
+
+george plays: ace of spades
+
+ringo plays: king of spades
+
+[
+  %{player: :ringo, rank: :king, suit: :spades},
+  %{player: :george, rank: :ace, suit: :spades},
+  %{player: :paul, rank: :queen, suit: :spades},
+  %{player: :john, rank: :ten, suit: :spades}
+]
+george leads: king of hearts
+
+ringo plays: nine of spades
+
+john plays: seven of spades
+
+paul plays: ten of hearts
+
+[
+  %{player: :paul, rank: :ten, suit: :hearts},
+  %{player: :john, rank: :seven, suit: :spades},
+  %{player: :ringo, rank: :nine, suit: :spades},
+  %{player: :george, rank: :king, suit: :hearts}
+]
+ringo leads: jack of clubs
+
+john plays: queen of clubs
+
+paul plays: king of clubs
+
+george plays: ace of clubs
+
+[
+  %{player: :george, rank: :ace, suit: :clubs},
+  %{player: :paul, rank: :king, suit: :clubs},
+  %{player: :john, rank: :queen, suit: :clubs},
+  %{player: :ringo, rank: :jack, suit: :clubs}
+]
+george leads: jack of diamonds
+
+ringo plays: king of diamonds
+
+john plays: queen of diamonds
+
+paul plays: seven of diamonds
+
+[
+  %{player: :paul, rank: :seven, suit: :diamonds},
+  %{player: :john, rank: :queen, suit: :diamonds},
+  %{player: :ringo, rank: :king, suit: :diamonds},
+  %{player: :george, rank: :jack, suit: :diamonds}
+]
+ringo leads: eight of diamonds
+
+john plays: ten of diamonds
+
+paul plays: jack of spades
+
+george plays: ace of diamonds
+
+[
+  %{player: :george, rank: :ace, suit: :diamonds},
+  %{player: :paul, rank: :jack, suit: :spades},
+  %{player: :john, rank: :ten, suit: :diamonds},
+  %{player: :ringo, rank: :eight, suit: :diamonds}
+]
+paul leads: eight of spades
+
+george plays: nine of clubs
+
+ringo plays: ten of clubs
+
+john plays: nine of diamonds
+
+[
+  %{player: :john, rank: :nine, suit: :diamonds},
+  %{player: :ringo, rank: :ten, suit: :clubs},
+  %{player: :george, rank: :nine, suit: :clubs},
+  %{player: :paul, rank: :eight, suit: :spades}
+]
+paul leads: seven of hearts
+
+george plays: jack of hearts
+
+ringo plays: eight of clubs
+
+john plays: seven of clubs
+
+Hand over. New score:
+%{1 => 7, 2 => 6}
+
+
+starting new hand...
+
+dealer is ringo from team 2
+
+john decides to pass...
+
+paul decides to pass...
+
+george decides to call...
+
+ringo playing first card...
+
+george calls clubs
+
+First card was: eight of clubs
+
+john plays: jack of clubs
+
+paul plays: king of clubs
+
+george plays: ten of clubs
+
+[
+  %{player: :george, rank: :ten, suit: :clubs},
+  %{player: :paul, rank: :king, suit: :clubs},
+  %{player: :john, rank: :jack, suit: :clubs},
+  %{player: :ringo, rank: :eight, suit: :clubs}
+]
+paul leads: queen of clubs
+
+george plays: ten of spades
+
+ringo plays: ace of clubs
+
+john plays: nine of spades
+
+[
+  %{player: :john, rank: :nine, suit: :spades},
+  %{player: :ringo, rank: :ace, suit: :clubs},
+  %{player: :george, rank: :ten, suit: :spades},
+  %{player: :paul, rank: :queen, suit: :clubs}
+]
+ringo leads: nine of clubs
+
+john plays: seven of hearts
+
+paul plays: seven of clubs
+
+george plays: ten of hearts
+
+[
+  %{player: :george, rank: :ten, suit: :hearts},
+  %{player: :paul, rank: :seven, suit: :clubs},
+  %{player: :john, rank: :seven, suit: :hearts},
+  %{player: :ringo, rank: :nine, suit: :clubs}
+]
+ringo leads: eight of spades
+
+john plays: queen of spades
+
+paul plays: ace of spades
+
+george plays: king of spades
+
+[
+  %{player: :george, rank: :king, suit: :spades},
+  %{player: :paul, rank: :ace, suit: :spades},
+  %{player: :john, rank: :queen, suit: :spades},
+  %{player: :ringo, rank: :eight, suit: :spades}
+]
+paul leads: nine of hearts
+
+george plays: ace of hearts
+
+ringo plays: jack of hearts
+
+john plays: eight of hearts
+
+[
+  %{player: :john, rank: :eight, suit: :hearts},
+  %{player: :ringo, rank: :jack, suit: :hearts},
+  %{player: :george, rank: :ace, suit: :hearts},
+  %{player: :paul, rank: :nine, suit: :hearts}
+]
+george leads: jack of diamonds
+
+ringo plays: queen of diamonds
+
+john plays: ace of diamonds
+
+paul plays: king of diamonds
+
+[
+  %{player: :paul, rank: :king, suit: :diamonds},
+  %{player: :john, rank: :ace, suit: :diamonds},
+  %{player: :ringo, rank: :queen, suit: :diamonds},
+  %{player: :george, rank: :jack, suit: :diamonds}
+]
+john leads: eight of diamonds
+
+paul plays: queen of hearts
+
+george plays: seven of spades
+
+ringo plays: ten of diamonds
+
+[
+  %{player: :ringo, rank: :ten, suit: :diamonds},
+  %{player: :george, rank: :seven, suit: :spades},
+  %{player: :paul, rank: :queen, suit: :hearts},
+  %{player: :john, rank: :eight, suit: :diamonds}
+]
+ringo leads: seven of diamonds
+
+john plays: nine of diamonds
+
+paul plays: jack of spades
+
+george plays: king of hearts
+
+Hand over. New score:
+%{1 => 7, 2 => 8}
+
+
+starting new hand...
+
+dealer is john from team 1
+
+paul decides to pass...
+
+george decides to call...
+
+ringo playing first card...
+
+george calls hearts
+
+First card was: seven of diamonds
+
+john plays: ace of diamonds
+
+paul plays: queen of diamonds
+
+george plays: king of diamonds
+
+[
+  %{player: :george, rank: :king, suit: :diamonds},
+  %{player: :paul, rank: :queen, suit: :diamonds},
+  %{player: :john, rank: :ace, suit: :diamonds},
+  %{player: :ringo, rank: :seven, suit: :diamonds}
+]
+john leads: nine of hearts
+
+paul plays: ace of hearts
+
+george plays: king of hearts
+
+ringo plays: queen of hearts
+
+[
+  %{player: :ringo, rank: :queen, suit: :hearts},
+  %{player: :george, rank: :king, suit: :hearts},
+  %{player: :paul, rank: :ace, suit: :hearts},
+  %{player: :john, rank: :nine, suit: :hearts}
+]
+paul leads: seven of clubs
+
+george plays: jack of hearts
+
+ringo plays: ace of clubs
+
+john plays: king of clubs
+
+[
+  %{player: :john, rank: :king, suit: :clubs},
+  %{player: :ringo, rank: :ace, suit: :clubs},
+  %{player: :george, rank: :jack, suit: :hearts},
+  %{player: :paul, rank: :seven, suit: :clubs}
+]
+george leads: ten of hearts
+
+ringo plays: ten of spades
+
+john plays: eight of hearts
+
+paul plays: jack of spades
+
+[
+  %{player: :paul, rank: :jack, suit: :spades},
+  %{player: :john, rank: :eight, suit: :hearts},
+  %{player: :ringo, rank: :ten, suit: :spades},
+  %{player: :george, rank: :ten, suit: :hearts}
+]
+george leads: seven of hearts
+
+ringo plays: eight of spades
+
+john plays: eight of diamonds
+
+paul plays: eight of clubs
+
+[
+  %{player: :paul, rank: :eight, suit: :clubs},
+  %{player: :john, rank: :eight, suit: :diamonds},
+  %{player: :ringo, rank: :eight, suit: :spades},
+  %{player: :george, rank: :seven, suit: :hearts}
+]
+george leads: queen of spades
+
+ringo plays: nine of spades
+
+john plays: nine of diamonds
+
+paul plays: ace of spades
+
+[
+  %{player: :paul, rank: :ace, suit: :spades},
+  %{player: :john, rank: :nine, suit: :diamonds},
+  %{player: :ringo, rank: :nine, suit: :spades},
+  %{player: :george, rank: :queen, suit: :spades}
+]
+paul leads: king of spades
+
+george plays: seven of spades
+
+ringo plays: jack of diamonds
+
+john plays: nine of clubs
+
+[
+  %{player: :john, rank: :nine, suit: :clubs},
+  %{player: :ringo, rank: :jack, suit: :diamonds},
+  %{player: :george, rank: :seven, suit: :spades},
+  %{player: :paul, rank: :king, suit: :spades}
+]
+paul leads: jack of clubs
+
+george plays: ten of diamonds
+
+ringo plays: ten of clubs
+
+john plays: queen of clubs
+
+Hand over. New score:
+%{1 => 8, 2 => 8}
+
+
+starting new hand...
+
+dealer is john from team 1
+
+paul decides to call...
+
+george playing first card...
+
+paul calls hearts
+
+First card was: ace of diamonds
+
+ringo plays: queen of diamonds
+
+john plays: king of diamonds
+
+paul plays: nine of diamonds
+
+[
+  %{player: :paul, rank: :nine, suit: :diamonds},
+  %{player: :john, rank: :king, suit: :diamonds},
+  %{player: :ringo, rank: :queen, suit: :diamonds},
+  %{player: :george, rank: :ace, suit: :diamonds}
+]
+george leads: ace of hearts
+
+ringo plays: king of hearts
+
+john plays: ten of hearts
+
+paul plays: queen of hearts
+
+[
+  %{player: :paul, rank: :queen, suit: :hearts},
+  %{player: :john, rank: :ten, suit: :hearts},
+  %{player: :ringo, rank: :king, suit: :hearts},
+  %{player: :george, rank: :ace, suit: :hearts}
+]
+george leads: jack of hearts
+
+ringo plays: ten of diamonds
+
+john plays: seven of hearts
+
+paul plays: nine of hearts
+
+[
+  %{player: :paul, rank: :nine, suit: :hearts},
+  %{player: :john, rank: :seven, suit: :hearts},
+  %{player: :ringo, rank: :ten, suit: :diamonds},
+  %{player: :george, rank: :jack, suit: :hearts}
+]
+george leads: seven of spades
+
+ringo plays: ace of spades
+
+john plays: jack of spades
+
+paul plays: king of spades
+
+[
+  %{player: :paul, rank: :king, suit: :spades},
+  %{player: :john, rank: :jack, suit: :spades},
+  %{player: :ringo, rank: :ace, suit: :spades},
+  %{player: :george, rank: :seven, suit: :spades}
+]
+ringo leads: ace of clubs
+
+john plays: jack of clubs
+
+paul plays: eight of hearts
+
+george plays: queen of clubs
+
+[
+  %{player: :george, rank: :queen, suit: :clubs},
+  %{player: :paul, rank: :eight, suit: :hearts},
+  %{player: :john, rank: :jack, suit: :clubs},
+  %{player: :ringo, rank: :ace, suit: :clubs}
+]
+paul leads: seven of diamonds
+
+george plays: nine of clubs
+
+ringo plays: king of clubs
+
+john plays: jack of diamonds
+
+[
+  %{player: :john, rank: :jack, suit: :diamonds},
+  %{player: :ringo, rank: :king, suit: :clubs},
+  %{player: :george, rank: :nine, suit: :clubs},
+  %{player: :paul, rank: :seven, suit: :diamonds}
+]
+john leads: seven of clubs
+
+paul plays: queen of spades
+
+george plays: ten of spades
+
+ringo plays: ten of clubs
+
+[
+  %{player: :ringo, rank: :ten, suit: :clubs},
+  %{player: :george, rank: :ten, suit: :spades},
+  %{player: :paul, rank: :queen, suit: :spades},
+  %{player: :john, rank: :seven, suit: :clubs}
+]
+ringo leads: eight of clubs
+
+john plays: nine of spades
+
+paul plays: eight of diamonds
+
+george plays: eight of spades
+
+Hand over. New score:
+%{1 => 10, 2 => 8}
+
+
+starting new hand...
+
+dealer is paul from team 2
+
+george decides to pass...
+
+ringo decides to call...
+
+john playing first card...
+
+ringo calls diamonds
+
+First card was: eight of hearts
+
+paul plays: queen of hearts
+
+george plays: queen of diamonds
+
+ringo plays: king of hearts
+
+[
+  %{player: :ringo, rank: :king, suit: :hearts},
+  %{player: :george, rank: :queen, suit: :diamonds},
+  %{player: :paul, rank: :queen, suit: :hearts},
+  %{player: :john, rank: :eight, suit: :hearts}
+]
+george leads: nine of diamonds
+
+ringo plays: jack of diamonds
+
+john plays: king of diamonds
+
+paul plays: ace of diamonds
+
+[
+  %{player: :paul, rank: :ace, suit: :diamonds},
+  %{player: :john, rank: :king, suit: :diamonds},
+  %{player: :ringo, rank: :jack, suit: :diamonds},
+  %{player: :george, rank: :nine, suit: :diamonds}
+]
+paul leads: seven of diamonds
+
+george plays: eight of diamonds
+
+ringo plays: ten of diamonds
+
+john plays: eight of clubs
+
+[
+  %{player: :john, rank: :eight, suit: :clubs},
+  %{player: :ringo, rank: :ten, suit: :diamonds},
+  %{player: :george, rank: :eight, suit: :diamonds},
+  %{player: :paul, rank: :seven, suit: :diamonds}
+]
+ringo leads: seven of hearts
+
+john plays: ace of hearts
+
+paul plays: nine of hearts
+
+george plays: nine of spades
+
+[
+  %{player: :george, rank: :nine, suit: :spades},
+  %{player: :paul, rank: :nine, suit: :hearts},
+  %{player: :john, rank: :ace, suit: :hearts},
+  %{player: :ringo, rank: :seven, suit: :hearts}
+]
+john leads: jack of clubs
+
+paul plays: ten of clubs
+
+george plays: ace of clubs
+
+ringo plays: ten of hearts
+
+[
+  %{player: :ringo, rank: :ten, suit: :hearts},
+  %{player: :george, rank: :ace, suit: :clubs},
+  %{player: :paul, rank: :ten, suit: :clubs},
+  %{player: :john, rank: :jack, suit: :clubs}
+]
+george leads: jack of spades
+
+ringo plays: ace of spades
+
+john plays: seven of spades
+
+paul plays: king of spades
+
+[
+  %{player: :paul, rank: :king, suit: :spades},
+  %{player: :john, rank: :seven, suit: :spades},
+  %{player: :ringo, rank: :ace, suit: :spades},
+  %{player: :george, rank: :jack, suit: :spades}
+]
+ringo leads: queen of spades
+
+john plays: jack of hearts
+
+paul plays: eight of spades
+
+george plays: king of clubs
+
+[
+  %{player: :george, rank: :king, suit: :clubs},
+  %{player: :paul, rank: :eight, suit: :spades},
+  %{player: :john, rank: :jack, suit: :hearts},
+  %{player: :ringo, rank: :queen, suit: :spades}
+]
+ringo leads: ten of spades
+
+john plays: queen of clubs
+
+paul plays: nine of clubs
+
+george plays: seven of clubs
+
+Hand over. New score:
+%{1 => 10, 2 => 9}
+
+
+starting new hand...
+
+dealer is ringo from team 2
+
+john decides to call...
+
+paul playing first card...
+
+john calls hearts
+
+First card was: eight of spades
+
+george plays: ten of spades
+
+ringo plays: seven of spades
+
+john plays: jack of spades
+
+[
+  %{player: :john, rank: :jack, suit: :spades},
+  %{player: :ringo, rank: :seven, suit: :spades},
+  %{player: :george, rank: :ten, suit: :spades},
+  %{player: :paul, rank: :eight, suit: :spades}
+]
+john leads: queen of hearts
+
+paul plays: ten of hearts
+
+george plays: eight of hearts
+
+ringo plays: ace of hearts
+
+[
+  %{player: :ringo, rank: :ace, suit: :hearts},
+  %{player: :george, rank: :eight, suit: :hearts},
+  %{player: :paul, rank: :ten, suit: :hearts},
+  %{player: :john, rank: :queen, suit: :hearts}
+]
+ringo leads: king of hearts
+
+john plays: ten of clubs
+
+paul plays: seven of hearts
+
+george plays: ace of diamonds
+
+[
+  %{player: :george, rank: :ace, suit: :diamonds},
+  %{player: :paul, rank: :seven, suit: :hearts},
+  %{player: :john, rank: :ten, suit: :clubs},
+  %{player: :ringo, rank: :king, suit: :hearts}
+]
+ringo leads: jack of hearts
+
+john plays: nine of clubs
+
+paul plays: queen of spades
+
+george plays: seven of clubs
+
+[
+  %{player: :george, rank: :seven, suit: :clubs},
+  %{player: :paul, rank: :queen, suit: :spades},
+  %{player: :john, rank: :nine, suit: :clubs},
+  %{player: :ringo, rank: :jack, suit: :hearts}
+]
+ringo leads: nine of hearts
+
+john plays: nine of spades
+
+paul plays: queen of diamonds
+
+george plays: eight of clubs
+
+[
+  %{player: :george, rank: :eight, suit: :clubs},
+  %{player: :paul, rank: :queen, suit: :diamonds},
+  %{player: :john, rank: :nine, suit: :spades},
+  %{player: :ringo, rank: :nine, suit: :hearts}
+]
+ringo leads: queen of clubs
+
+john plays: ace of clubs
+
+paul plays: jack of clubs
+
+george plays: ten of diamonds
+
+[
+  %{player: :george, rank: :ten, suit: :diamonds},
+  %{player: :paul, rank: :jack, suit: :clubs},
+  %{player: :john, rank: :ace, suit: :clubs},
+  %{player: :ringo, rank: :queen, suit: :clubs}
+]
+john leads: king of diamonds
+
+paul plays: ace of spades
+
+george plays: nine of diamonds
+
+ringo plays: jack of diamonds
+
+[
+  %{player: :ringo, rank: :jack, suit: :diamonds},
+  %{player: :george, rank: :nine, suit: :diamonds},
+  %{player: :paul, rank: :ace, suit: :spades},
+  %{player: :john, rank: :king, suit: :diamonds}
+]
+john leads: eight of diamonds
+
+paul plays: king of spades
+
+george plays: seven of diamonds
+
+ringo plays: king of clubs
+
+Hand over. New score:
+%{1 => 10, 2 => 11}
+
+
+starting new hand...
+
+dealer is john from team 1
+
+paul decides to call...
+
+george playing first card...
+
+paul calls diamonds
+
+First card was: nine of clubs
+
+ringo plays: ace of clubs
+
+john plays: king of clubs
+
+paul plays: ace of diamonds
+
+[
+  %{player: :paul, rank: :ace, suit: :diamonds},
+  %{player: :john, rank: :king, suit: :clubs},
+  %{player: :ringo, rank: :ace, suit: :clubs},
+  %{player: :george, rank: :nine, suit: :clubs}
+]
+paul leads: queen of diamonds
+
+george plays: king of diamonds
+
+ringo plays: seven of spades
+
+john plays: jack of diamonds
+
+[
+  %{player: :john, rank: :jack, suit: :diamonds},
+  %{player: :ringo, rank: :seven, suit: :spades},
+  %{player: :george, rank: :king, suit: :diamonds},
+  %{player: :paul, rank: :queen, suit: :diamonds}
+]
+george leads: nine of diamonds
+
+ringo plays: ace of spades
+
+john plays: ten of clubs
+
+paul plays: ten of diamonds
+
+[
+  %{player: :paul, rank: :ten, suit: :diamonds},
+  %{player: :john, rank: :ten, suit: :clubs},
+  %{player: :ringo, rank: :ace, suit: :spades},
+  %{player: :george, rank: :nine, suit: :diamonds}
+]
+paul leads: seven of diamonds
+
+george plays: eight of diamonds
+
+ringo plays: queen of spades
+
+john plays: ten of hearts
+
+[
+  %{player: :john, rank: :ten, suit: :hearts},
+  %{player: :ringo, rank: :queen, suit: :spades},
+  %{player: :george, rank: :eight, suit: :diamonds},
+  %{player: :paul, rank: :seven, suit: :diamonds}
+]
+george leads: ten of spades
+
+ringo plays: king of spades
+
+john plays: king of hearts
+
+paul plays: nine of spades
+
+[
+  %{player: :paul, rank: :nine, suit: :spades},
+  %{player: :john, rank: :king, suit: :hearts},
+  %{player: :ringo, rank: :king, suit: :spades},
+  %{player: :george, rank: :ten, suit: :spades}
+]
+ringo leads: queen of hearts
+
+john plays: seven of hearts
+
+paul plays: ace of hearts
+
+george plays: jack of hearts
+
+[
+  %{player: :george, rank: :jack, suit: :hearts},
+  %{player: :paul, rank: :ace, suit: :hearts},
+  %{player: :john, rank: :seven, suit: :hearts},
+  %{player: :ringo, rank: :queen, suit: :hearts}
+]
+paul leads: eight of spades
+
+george plays: jack of spades
+
+ringo plays: jack of clubs
+
+john plays: eight of clubs
+
+[
+  %{player: :john, rank: :eight, suit: :clubs},
+  %{player: :ringo, rank: :jack, suit: :clubs},
+  %{player: :george, rank: :jack, suit: :spades},
+  %{player: :paul, rank: :eight, suit: :spades}
+]
+george leads: seven of clubs
+
+ringo plays: eight of hearts
+
+john plays: queen of clubs
+
+paul plays: nine of hearts
+
+Game Over.
+Score:
+%{1 => 12, 2 => 11}
